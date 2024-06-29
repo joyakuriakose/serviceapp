@@ -106,6 +106,7 @@ class RequestController extends GetxController {
   final FocusNode dateCtrlfNode = FocusNode();
   RxString serviceRequestType = 'Service Type '.obs;
   RxString selectedAmcCode = ''.obs;
+  Map<String, int> amcCodeToIdMap = {}; // Map to store amc_code to amc_id
   List<String> servicetype = ['AMC', 'Non-AMC'];
 
   final TextEditingController serviceRequestController = TextEditingController();
@@ -127,7 +128,12 @@ class RequestController extends GetxController {
       if (resp != null && resp.ok == true) {
         var packageListingModel = GetAmcList.fromJson(resp.rdata);
         amclist.value = packageListingModel.amcList;
-        amcCodes.value = amclist.map((amc) => amc.code ?? '').toList();
+        amcCodes.value = amclist.map((amc) {
+          if (amc.code != null && amc.id != null) {
+            amcCodeToIdMap[amc.code!] = amc.id!;
+          }
+          return amc.code ?? '';
+        }).toList();
       } else {
         print("Error: ${resp?.msgs?.first.msg}");
       }
@@ -155,9 +161,15 @@ class RequestController extends GetxController {
     try {
       ApiResp resp;
       if (serviceRequestType.value == 'AMC') {
+        if (selectedAmcCode.value.isEmpty) {
+          Get.snackbar("Error", "Please select an AMC code");
+          isScreenProgress.value = false;
+          return;
+        }
+        int amcId = amcCodeToIdMap[selectedAmcCode.value]!;
         resp = await ServiceRequestServices.fetchUser(
           customer_id: id,
-          amc_id: int.tryParse(selectedAmcCode.value),
+          amc_id: amcId,
           amc_type: 0,
           demand: demandsController.text,
         );
@@ -182,6 +194,8 @@ class RequestController extends GetxController {
     }
   }
 }
+
+
 
 
 

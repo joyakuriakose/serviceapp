@@ -8,11 +8,10 @@ import '../model/api_resp.dart';
 import '../presets/api_paths.dart';
 import '../utils/err_m.dart';
 import '../utils/mydio.dart';
-
 abstract class ServiceRequestServices {
   static Future<ApiResp> fetchUser({
     required int customer_id,
-    int? amc_id,
+    int? amc_id, // Keep amc_id as int
     required int amc_type,
     String? demand,
     String? service_date,
@@ -24,7 +23,7 @@ abstract class ServiceRequestServices {
         'customer_id': customer_id,
         'amc_type': amc_type,
         'demand': demand,
-        if (amc_type == 0) 'amc_id': amc_id,
+        if (amc_type == 0 && amc_id != null) 'amc_id': amc_id, // Pass as int
         if (amc_type == 1) 'service_date': service_date,
       };
 
