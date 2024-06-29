@@ -31,7 +31,7 @@ abstract class PackageDetailServices {
           msgType: "",
           title: "Success",
         )
-      ],
+      ], message: '',
     )
         : ApiResp(
       ok: false,
@@ -42,7 +42,7 @@ abstract class PackageDetailServices {
           msgType: "0",
           title: "Failed",
         )
-      ],
+      ], message: '',
     );
   }
 }

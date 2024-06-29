@@ -11,7 +11,7 @@ import '../presets/api_paths.dart';
 ApiResp respNew = ApiResp(
   ok: false,
   rdata: null,
-  msgs: [],
+  msgs: [], message: '',
 );
 
 class MyDio {

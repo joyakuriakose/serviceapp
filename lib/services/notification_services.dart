@@ -30,7 +30,7 @@ abstract class NotificationServices {
           msgType: "",
           title: "Success",
         )
-      ],
+      ], message: '',
     )
         : ApiResp(
       ok: false,
@@ -41,7 +41,7 @@ abstract class NotificationServices {
           msgType: "0",
           title: "Failed",
         )
-      ],
+      ], message: '',
     );
     return respNew;
   }

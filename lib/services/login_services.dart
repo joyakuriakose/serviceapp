@@ -31,7 +31,7 @@ abstract class LoginServices {
             msgType: "",
             title: "Success",
           )
-        ],
+        ], message: '',
       )
           : ApiResp(
         ok: false,
@@ -42,7 +42,7 @@ abstract class LoginServices {
             msgType: "0",
             title: "Failed",
           )
-        ],
+        ], message: '',
       );
     }
     return respNew;

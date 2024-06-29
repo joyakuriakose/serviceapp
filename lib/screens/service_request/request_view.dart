@@ -319,7 +319,7 @@ class RequestView extends GetView<RequestController> {
                       child: MAButton(
                         text: 'Submit',
                         buttonPress: () async {
-                          await controller.submitServiceRequest();
+                           controller.submitServiceRequest();
                         },
                         isEnabled: true,
                         padding: const EdgeInsets.all(30),

@@ -6,8 +6,10 @@ import 'package:intl/intl.dart';
 
 import '../../model/api_resp.dart';
 import '../../model/get_amclist_model.dart';
+import '../../model/request_model.dart';
 import '../../services/get_amclist_services.dart';
 import '../../services/service_req_services.dart';
+import '../../utils/my_utils.dart';
 
 // class RequestController extends GetxController {
 //   RxList<AmcList> amclist = <AmcList>[].obs;
@@ -112,7 +114,14 @@ class RequestController extends GetxController {
 
   RequestController(this.id);
 
-  initialAcListt() async {
+  @override
+  void onInit() {
+    super.onInit();
+    dateCtrl.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    initialAcListt();
+  }
+
+  void initialAcListt() async {
     try {
       ApiResp? resp = await AmcListServices.fetchAmcList(id);
       if (resp != null && resp.ok == true) {
@@ -127,43 +136,6 @@ class RequestController extends GetxController {
     }
   }
 
-  Future<void> submitServiceRequest() async {
-    isScreenProgress.value = true;
-    try {
-      ApiResp resp;
-      if (serviceRequestType.value == 'AMC') {
-        resp = await ServiceRequestServices.fetchRequest(
-          customerId: id,
-          amcId: int.parse(serviceRequestController.text), // assuming amcId is provided as input
-          amcType: serviceRequestType.value,
-        );
-      } else {
-        resp = await ServiceRequestServices.fetchRequest(
-          customerId: id,
-          amcType: serviceRequestType.value,
-          service_date: dateCtrl.text,
-        );
-      }
-      isScreenProgress.value = false;
-
-      if (resp.ok == true) {
-        Get.snackbar("Success", "Service request submitted successfully");
-      } else {
-        Get.snackbar("Failed", resp.msgs?.first.msg);
-      }
-    } catch (e) {
-      isScreenProgress.value = false;
-      Get.snackbar("Error", "Failed to submit service request: $e");
-    }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    dateCtrl.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
-    initialAcListt(); // Call the method to fetch the AMC list
-  }
-
   void selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -173,9 +145,72 @@ class RequestController extends GetxController {
     );
 
     if (pickedDate != null) {
-      // Format the pickedDate to dd-MM-yyyy format
       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
       dateCtrl.text = formattedDate;
     }
   }
+
+  Future<void> submitServiceRequest() async {
+    isScreenProgress.value = true;
+    try {
+      ApiResp resp;
+      if (serviceRequestType.value == 'AMC') {
+        resp = await ServiceRequestServices.fetchUser(
+          customer_id: id,
+          amc_id: int.tryParse(selectedAmcCode.value),
+          amc_type: 0,
+          demand: demandsController.text,
+        );
+      } else {
+        resp = await ServiceRequestServices.fetchUser(
+          customer_id: id,
+          amc_type: 1,
+          demand: demandsController.text,
+          service_date: dateCtrl.text,
+        );
+      }
+      isScreenProgress.value = false;
+
+      if (resp.ok == true) {
+        Get.snackbar("Success", "Service request submitted successfully");
+      } else {
+        Get.snackbar("Failed", resp.msgs?.first.msg ?? 'Unknown error');
+      }
+    } catch (e) {
+      isScreenProgress.value = false;
+      Get.snackbar("Error", "Failed to submit service request: $e");
+    }
+  }
 }
+
+
+
+// Future<void> submitServiceRequest() async {
+//   isScreenProgress.value = true;
+//   try {
+//     ApiResp resp;
+//     if (serviceRequestType.value == 'AMC') {
+//       resp = await ServiceRequestServices.fetchRequest(
+//         customerId: id,
+//         amcId: int.parse(serviceRequestController.text), // assuming amcId is provided as input
+//         amcType: serviceRequestType.value,
+//       );
+//     } else {
+//       resp = await ServiceRequestServices.fetchRequest(
+//         customerId: id,
+//         amcType: serviceRequestType.value,
+//         service_date: dateCtrl.text,
+//       );
+//     }
+//     isScreenProgress.value = false;
+//
+//     if (resp.ok == true) {
+//       Get.snackbar("Success", "Service request submitted successfully");
+//     } else {
+//       Get.snackbar("Failed", resp.msgs?.first.msg);
+//     }
+//   } catch (e) {
+//     isScreenProgress.value = false;
+//     Get.snackbar("Error", "Failed to submit service request: $e");
+//   }
+// }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
+import '../app.dart';
 import '../model/api_msg.dart';
 import '../model/api_resp.dart';
 import '../presets/api_paths.dart';
@@ -9,87 +10,72 @@ import '../utils/err_m.dart';
 import '../utils/mydio.dart';
 
 abstract class ServiceRequestServices {
-  static Future<ApiResp> fetchRequest({
-    required int customerId,
-    int? amcId, // Make amcId optional
-    String? service_date, // Make service_date optional
-    String? demand, // Make demand optional
-    required String amcType,
+  static Future<ApiResp> fetchUser({
+    required int customer_id,
+    int? amc_id,
+    required int amc_type,
+    String? demand,
+    String? service_date,
   }) async {
-    dynamic resp;
-    await errMAsync(
-          () async {
-        // Construct the data object based on the provided parameters
-        Map<String, dynamic> data = {
-          'customer_id': customerId,
-          'amc_type': amcType,
-        };
+    try {
+      String token = await getToken();
 
-        // Add optional parameters based on the type
-        if (amcType == 'AMC' && amcId != null) {
-          data['amc_id'] = amcId;
-        } else if (amcType != 'AMC' && service_date != null) {
-          data['service_date'] = service_date;
-        }
+      final Map<String, dynamic> data = {
+        'customer_id': customer_id,
+        'amc_type': amc_type,
+        'demand': demand,
+        if (amc_type == 0) 'amc_id': amc_id,
+        if (amc_type == 1) 'service_date': service_date,
+      };
 
-        if (demand != null) {
-          data['demand'] = demand;
-        }
+      final resp = await MyDio().customPost(
+        ApiPaths.serviceRequest,
+        data: data,
+        options: Options(
+          headers: {
+            'Authorization': 'Token ${App.user.apiToken}',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
 
-        resp = await MyDio().customPost(
-          ApiPaths.serviceRequest,
-          data: data,
-        );
-      },
-      title: 'Shop Register Failed',
-    );
-
-    if (resp is DioError) {
-      if (resp.response?.statusCode == 400) {
-        log('400 >> ${resp.response}');
-        showMsg("Invalid Details", "Registration Failed");
-      }
-      if (resp.type == DioErrorType.connectTimeout) {
-        showMsg(
-            'Connection timed-out. Check internet connection.',
-            "Registration Failed"
+      if (resp is DioError) {
+        _handleDioError(resp);
+      } else {
+        return ApiResp(
+          ok: true,
+          rdata: resp,
+          msgs: [ApiMsg(msg: "", msgType: "", title: "Success")],
+          message: '',
         );
       }
-      if (resp.type == DioErrorType.receiveTimeout) {
-        showMsg('Unable to connect to the server', "Registration Failed");
-      }
-      if (resp.type == DioErrorType.other) {
-        showMsg(
-            'Something went wrong with server communication',
-            "Registration Failed"
-        );
-      }
-    } else {
-      respNew = resp != null
-          ? ApiResp(
-        ok: true,
-        rdata: resp,
-        msgs: [
-          ApiMsg(
-            msg: "",
-            msgType: "",
-            title: "Success",
-          )
-        ],
-      )
-          : ApiResp(
+    } catch (e) {
+      print('Error during fetchUser: $e');
+      return ApiResp(
         ok: false,
-        rdata: "",
-        msgs: [
-          ApiMsg(
-            msg: "Server response failed",
-            msgType: "0",
-            title: "Failed",
-          )
-        ],
+        rdata: '',
+        msgs: [ApiMsg(msg: 'Error during fetchUser: $e', title: 'Error', msgType: '')],
+        message: '',
       );
     }
-    return respNew;
+    return ApiResp(ok: false, rdata: '', msgs: [], message: '');
+  }
+
+  static void _handleDioError(DioError resp) {
+    if (resp.response?.statusCode == 400) {
+      log('400 >> ${resp.response}');
+      showMsg("Invalid Details", "Registration Failed");
+    } else if (resp.type == DioErrorType.connectTimeout) {
+      showMsg('Connection timed-out. Check internet connection.', "Registration Failed");
+    } else if (resp.type == DioErrorType.receiveTimeout) {
+      showMsg('Unable to connect to the server', "Registration Failed");
+    } else if (resp.type == DioErrorType.other) {
+      showMsg('Something went wrong with server communication', "Registration Failed");
+    }
+  }
+
+  static Future<String> getToken() async {
+    // Implement your token retrieval logic here
+    return 'YOUR_AUTH_TOKEN';
   }
 }
-
