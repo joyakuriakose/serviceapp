@@ -9,14 +9,14 @@ Widget dropDownBox({
   required TextEditingController controller,
 }) {
   return Padding(
-    padding: EdgeInsets.only( right: 5),
+    padding: const EdgeInsets.only(right: 5),
     child: Padding(
       padding: const EdgeInsets.only(right: 10),
       child: Container(
         color: Colors.black,
-                child: DropdownButtonHideUnderline(
+        child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
-            value: ListValue,
+            value: ListValue.isEmpty ? null : ListValue, // Set to null if empty to show hint
             icon: Icon(
               Icons.keyboard_arrow_down_outlined,
               color: Colors.white, // Change the icon color to match your design
@@ -24,12 +24,12 @@ Widget dropDownBox({
             hint: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '',
+                'Select', // Placeholder text
                 style: TextStyle(color: Colors.white), // Set the hint text color
               ),
             ),
             elevation: 10,
-            dropdownColor: Colors.black, // Make the dropdown background transparent
+            dropdownColor: Colors.black, // Change the dropdown background color to black
             onChanged: FunctioOnchanged,
             items: ListItem,
             style: TextStyle(

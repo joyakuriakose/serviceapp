@@ -183,13 +183,13 @@ class RequestView extends GetView<RequestController> {
                                             controller.selectedAmcCode.value = value;
                                           }
                                         },
-                                        ListItem: controller.amcCodes.map<DropdownMenuItem<String>>((String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
+                                        ListItem: [
+                                          DropdownMenuItem<String>(
+                                            value: '',
                                             child: Padding(
                                               padding: const EdgeInsets.all(8.0),
                                               child: Text(
-                                                value,
+                                                'Select', // Placeholder text
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.white,
@@ -197,14 +197,30 @@ class RequestView extends GetView<RequestController> {
                                                 ),
                                               ),
                                             ),
-                                          );
-                                        }).toList(),
+                                          ),
+                                          ...controller.amcCodes.map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  value,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ],
                                         ListValue: controller.amcCodes.contains(controller.selectedAmcCode.value)
                                             ? controller.selectedAmcCode.value
-                                            : (controller.amcCodes.isNotEmpty ? controller.amcCodes.first : ''),
-// Ensure value is always valid
+                                            : '',
                                       ),
                                     ),
+
                                   ],
                                 );
                               } else if (controller.serviceRequestType.value == 'Non-AMC') {
