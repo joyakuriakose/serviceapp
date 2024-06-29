@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
+import 'package:serviceapp/utils/routes.dart';
 
 import '../../model/api_resp.dart';
 import '../../model/get_amclist_model.dart';
@@ -151,7 +152,7 @@ class RequestController extends GetxController {
     );
 
     if (pickedDate != null) {
-      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       dateCtrl.text = formattedDate;
     }
   }
@@ -184,13 +185,16 @@ class RequestController extends GetxController {
       isScreenProgress.value = false;
 
       if (resp.ok == true) {
-        Get.snackbar("Success", "Service request submitted successfully");
+        Get.snackbar("Success", "Service request submitted successfully",
+          backgroundColor: Colors.green,);
       } else {
-        Get.snackbar("Failed", resp.msgs?.first.msg ?? 'Unknown error');
+        Get.snackbar("Failed", resp.msgs?.first.msg ?? 'Unknown error',
+          backgroundColor: Colors.red,);
       }
     } catch (e) {
       isScreenProgress.value = false;
-      Get.snackbar("Error", "Failed to submit service request: $e");
+      Get.snackbar("Error", "Failed to submit service request: $e",
+        backgroundColor: Colors.red,);
     }
   }
 }

@@ -61,30 +61,49 @@ class RequestView extends GetView<RequestController> {
                     SizedBox(height: Get.height * 0.02),
                     Row(
                       children: [
-                        Container(
-                          width: Get.width * 0.014,
-                          height: Get.height * 0.05,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(66, 94, 236, 1), // Start color
-                                Color.fromRGBO(34, 61, 192, 1), // End color
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: Get.width * 0.02),
+                        // Container(
+                        //   width: Get.width * 0.014,
+                        //   height: Get.height * 0.05,
+                        //   decoration: BoxDecoration(
+                        //     gradient: LinearGradient(
+                        //       colors: [
+                        //         Color.fromRGBO(66, 94, 236, 1), // Start color
+                        //         Color.fromRGBO(34, 61, 192, 1), // End color
+                        //       ],
+                        //       begin: Alignment.centerLeft,
+                        //       end: Alignment.centerRight,
+                        //     ),
+                        //   ),
+                        // ),
+                        // SizedBox(width: Get.width * 0.02),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Service Request Type",
-                              style: MyTheme.regularTextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: Get.height * 0.018,
-                              ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: Get.width * 0.014,
+                                  height: Get.height * 0.04,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromRGBO(66, 94, 236, 1), // Start color
+                                        Color.fromRGBO(34, 61, 192, 1), // End color
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: Get.width * 0.02),
+                                Text(
+                                  "Service Request Type",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
+                                  ),
+                                ),
+                              ],
                             ),
                             Container(
                               width: Get.width * 0.45,
@@ -103,7 +122,7 @@ class RequestView extends GetView<RequestController> {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 0.0),
+                                        padding: const EdgeInsets.all(8.0),
                                         child: Text(
                                           value,
                                           style: TextStyle(
@@ -129,12 +148,31 @@ class RequestView extends GetView<RequestController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(height: Get.height * 0.02),
-                                    Text(
-                                      "AMC Codes",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: Get.width * 0.014,
+                                          height: Get.height * 0.04,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color.fromRGBO(66, 94, 236, 1), // Start color
+                                                Color.fromRGBO(34, 61, 192, 1), // End color
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: Get.width * 0.02),
+                                        Text(
+                                          "AMC Codes",
+                                          style: MyTheme.regularTextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: Get.height * 0.018,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Container(
                                       width: Get.width * 0.45,
@@ -149,7 +187,7 @@ class RequestView extends GetView<RequestController> {
                                           return DropdownMenuItem<String>(
                                             value: value,
                                             child: Padding(
-                                              padding: EdgeInsets.only(top: 1.0, bottom: 1.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: Text(
                                                 value,
                                                 style: TextStyle(
@@ -172,59 +210,63 @@ class RequestView extends GetView<RequestController> {
                               } else if (controller.serviceRequestType.value == 'Non-AMC') {
                                 return
                                   Row(
-                                  children: [
-                                    Container(
-                                      width: Get.width * 0.014,
-                                      height: Get.height * 0.05,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Color.fromRGBO(66, 94, 236, 1), // Start color
-                                            Color.fromRGBO(34, 61, 192, 1), // End color
-                                          ],
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: Get.width * 0.02),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(height: Get.height * 0.02),
-                                        Text(
-                                          "Select Date",
-                                          style: MyTheme.regularTextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: Get.height * 0.018,
-                                          ),
-                                        ),
-                                        SizedBox(height: Get.height * 0.001),
-                                        Container(
-                                          width: Get.width * 0.3,
-                                          child: TextFormField(
-                                            controller: controller.dateCtrl,
-                                            focusNode: controller.dateCtrlfNode,
-                                            decoration: textBoxDecoration('').copyWith(
-                                              suffixIcon: IconButton(
-                                                icon: Icon(
-                                                  Icons.calendar_today,
-                                                  color: Colors.indigo,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: Get.height * 0.02),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: Get.width * 0.014,
+                                                height: Get.height * 0.04,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromRGBO(66, 94, 236, 1), // Start color
+                                                      Color.fromRGBO(34, 61, 192, 1), // End color
+                                                    ],
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                  ),
                                                 ),
-                                                onPressed: () {
-                                                  controller.selectDate(context); // Call selectDate function here
-                                                },
+                                              ),
+                                              SizedBox(width: Get.width * 0.02),
+                                              Text(
+                                                "Select Date",
+                                                style: MyTheme.regularTextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: Get.height * 0.018,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: Get.height * 0.001),
+                                          Container(
+                                            width: Get.width * 0.5,
+                                            child: TextFormField(
+                                              controller: controller.dateCtrl,
+                                              focusNode: controller.dateCtrlfNode,
+                                              decoration: textBoxDecoration('').copyWith(
+                                                suffixIcon: IconButton(
+                                                  icon: Icon(
+                                                    Icons.calendar_today,
+                                                    color: Colors.indigo,
+                                                  ),
+                                                  onPressed: () {
+                                                    controller.selectDate(context); // Call selectDate function here
+                                                  },
+                                                ),
+                                              ),
+                                              style: TextStyle(
+                                                color: Colors.white, // Set the text color here
                                               ),
                                             ),
-                                            style: TextStyle(
-                                              color: Colors.white, // Set the text color here
-                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                );
+                                        ],
+                                      ),
+                                    ],
+                                  );
                               }
                               return SizedBox.shrink();
                             }),
@@ -232,33 +274,52 @@ class RequestView extends GetView<RequestController> {
                         ),
                       ],
                     ),
-                    SizedBox(height: Get.height * 0.035),
+                    SizedBox(height: Get.height * 0.05),
                     Row(
                       children: [
-                        Container(
-                          width: Get.width * 0.014,
-                          height: Get.height * 0.05,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(66, 94, 236, 1), // Start color
-                                Color.fromRGBO(34, 61, 192, 1), // End color
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                          ),
-                        ),
+                        // Container(
+                        //   width: Get.width * 0.014,
+                        //   height: Get.height * 0.05,
+                        //   decoration: BoxDecoration(
+                        //     gradient: LinearGradient(
+                        //       colors: [
+                        //         Color.fromRGBO(66, 94, 236, 1), // Start color
+                        //         Color.fromRGBO(34, 61, 192, 1), // End color
+                        //       ],
+                        //       begin: Alignment.centerLeft,
+                        //       end: Alignment.centerRight,
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(width: Get.width * 0.02),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Service Demands",
-                              style: MyTheme.regularTextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: Get.height * 0.018,
-                              ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: Get.width * 0.014,
+                                  height: Get.height * 0.04,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromRGBO(66, 94, 236, 1), // Start color
+                                        Color.fromRGBO(34, 61, 192, 1), // End color
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: Get.width * 0.02),
+                                Text(
+                                  "Service Demands",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(height: Get.height * 0.001),
                             Padding(
@@ -280,10 +341,10 @@ class RequestView extends GetView<RequestController> {
                                       decoration: InputDecoration(
                                         border: InputBorder.none,
                                         filled: false,
-                                        hintText: 'xxxxxxxxxxxxx',
+                                        hintText: 'Enter your service demands',
                                         hintStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
+                                          color: Colors.grey[700],
+                                          fontSize: 14.0,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
@@ -319,7 +380,7 @@ class RequestView extends GetView<RequestController> {
                       child: MAButton(
                         text: 'Submit',
                         buttonPress: () async {
-                           controller.submitServiceRequest();
+                          controller.submitServiceRequest();
                         },
                         isEnabled: true,
                         padding: const EdgeInsets.all(30),
