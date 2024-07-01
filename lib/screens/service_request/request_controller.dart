@@ -126,6 +126,7 @@ class RequestController extends GetxController {
     super.onInit();
     dateCtrl.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     initialAcListt();
+
   }
 
   void initialAcListt() async {

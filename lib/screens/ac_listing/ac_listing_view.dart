@@ -21,7 +21,7 @@ class AcListingView extends GetView<AcListingController> {
   const AcListingView({Key? key}) : super(key: key);
   String _formatDate(DateTime? dateTime) {
     if (dateTime != null) {
-      return "${dateTime.day}-${dateTime.month}-${dateTime.year}";
+      return "${dateTime.year}-${dateTime.month}-${dateTime.day}";
     } else {
       return "--------"; // Display a message for null values
     }

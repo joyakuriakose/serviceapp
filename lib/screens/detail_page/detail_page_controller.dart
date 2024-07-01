@@ -8,11 +8,12 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../../model/api_resp.dart';
 import '../../model/package_detail_model.dart';
 import '../../services/package_detail_services.dart';
-
 class DetailPageController extends GetxController {
   RxBool isScreenProgress = false.obs;
   Rx<AmcDetails> amcdetails = AmcDetails().obs;
+  Rx<ServiceDate> serviceDetails = ServiceDate().obs;
   int? amcId; // Define amcId property to hold the current amcId
+  int? serviceId; // Define amcId property to hold the current amcId
 
   @override
   void onInit() {
@@ -32,24 +33,18 @@ class DetailPageController extends GetxController {
 
   Future<void> initialDataFetching(int amcId) async {
     isScreenProgress.value = true;
-    await fetchSelectedPackageDetails(amcId);
-    isScreenProgress.value = false;
-  }
-
-
-  Future<bool> fetchSelectedPackageDetails(int amcId) async {
     final ApiResp itemDetailsResp = await PackageDetailServices.fetchPackageDetails(amcId);
 
     if (itemDetailsResp.ok == null || !itemDetailsResp.ok!) {
       isScreenProgress.value = false;
-      return false;
+      return;
     } else {
       amcdetails.value = AmcDetails.fromJson(itemDetailsResp.rdata['amc_details']);
       // Log the response
       print('Item Response: ${itemDetailsResp.rdata}');
-      return true;
+      isScreenProgress.value = false;
     }
   }
-
 }
+
 

@@ -2,6 +2,7 @@
 
 import 'model/get_amclist_model.dart';
 import 'model/notification_model.dart';
+import 'model/package_detail_model.dart';
 import 'model/package_listing_model.dart';
 import 'model/user_model.dart';
 

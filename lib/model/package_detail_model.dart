@@ -85,25 +85,30 @@ class AmcDetails {
 }
 
 class ServiceDate {
+  int? serviceId;
   DateTime? date;
   String? type;
   String? status;
 
   ServiceDate({
+    this.serviceId,
     this.date,
     this.type,
     this.status,
   });
 
   factory ServiceDate.fromJson(Map<String, dynamic> json) => ServiceDate(
+    serviceId: json["service_id"],
     date: DateTime.parse(json["date"]),
     type: json["type"],
     status: json["status"],
   );
 
   Map<String, dynamic> toJson() => {
+    "service_id": serviceId,
     "date": "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
     "type": type,
     "status": status,
   };
 }
+
