@@ -5,12 +5,16 @@ import 'package:get/get_instance/src/bindings_interface.dart';
 import '../../app.dart';
 import 'feedback_controller.dart';
 
-
 class FeedbackBindings extends Bindings {
   @override
   void dependencies() {
-    final int userId = App.user.id!;
-    Get.lazyPut<FeedbackController>(() => FeedbackController(userId, Get.arguments as int));
+    final Map<String, dynamic> arguments = Get.arguments as Map<String, dynamic>? ?? {};
+    final int amcId = arguments['amcId'] ?? 0;
+    final int serviceId = arguments['serviceId'] ?? 0; // Handle this if required
+
+    Get.lazyPut<FeedbackController>(
+          () => FeedbackController(amcId, serviceId), // Pass both IDs if required
+    );
   }
 }
 

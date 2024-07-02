@@ -20,11 +20,12 @@ class DetailPageController extends GetxController {
     super.onInit();
     // Retrieve amcId from arguments
     amcId = Get.arguments as int?;
+    serviceId = Get.arguments as int?;
     fetchDetails();
   }
 
   void fetchDetails() async {
-    if (amcId != null) {
+    if (amcId != null && serviceId != null) {
       await initialDataFetching(amcId!);
     } else {
       print("Error: amcId is null");

@@ -18,10 +18,10 @@ class FeedbackController extends GetxController {
   RxString selectedOption3 = ''.obs;
   RxInt rating = 0.obs;
   bool isFeedbackEmpty = true;
-  final int customerId;
-  final int amcId; // Define amcId property
+  final int amcId;
+  final int serviceId; // Add this if needed
 
-  FeedbackController(this.customerId, this.amcId);
+  FeedbackController(this.amcId, this.serviceId); // Adjust constructor if needed
 
   @override
   void onInit() {
@@ -48,8 +48,9 @@ class FeedbackController extends GetxController {
 
   void feedbackSubmit() async {
     ApiResp resp = await FeedbackService.submitFeedback(
-      customer_id: customerId,
+      customer_id: amcId, // Adjust parameter name if needed
       amc_id: amcId,
+      // Add serviceId parameter if needed in your API call
       answer_1: selectedOption1.value,
       answer_2: selectedOption2.value,
       answer_3: selectedOption3.value,
@@ -80,5 +81,4 @@ class FeedbackController extends GetxController {
     super.onClose();
   }
 }
-
 
