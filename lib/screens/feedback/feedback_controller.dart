@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,6 +24,7 @@ class FeedbackController extends GetxController {
   final int amcId;
   final int userId;
   final int serviceId;
+  RxBool isScreenProgress = true.obs;
 
   FeedbackController(this.amcId, this.userId, this.serviceId);
 
@@ -48,37 +52,84 @@ class FeedbackController extends GetxController {
   }
 
   void feedbackSubmit() async {
-    ApiResp resp = await FeedbackService.submitFeedback(
-      customer_id: userId,
-      amc_id: amcId,
-      amc_service_id: serviceId,
-      answer_1: selectedOption1.value,
-      answer_2: selectedOption2.value,
-      answer_3: selectedOption3.value,
-      rating: rating.value.toString(),
-      comment: feedbackController.text,
-    );
-
-    if (!resp.ok) {
-      MyUtils.msg(resp.msgs);
-      return;
-    }
-
-    ApiFeedbackResp feedresp = ApiFeedbackResp.fromJson(resp.rdata);
-    if (feedresp.message == 'Feedback submitted successfully') {
-      Get.snackbar(
-        'Success',
-        'Feedback submitted successfully',
-        backgroundColor: Colors.white,
-        colorText: Colors.black,
-        snackPosition: SnackPosition.TOP,
+    try {
+      isScreenProgress.value = true;
+      ApiResp resp = await FeedbackService.submitFeedback(
+        customer_id: userId,
+        amc_id: amcId,
+        amc_service_id: serviceId,
+        answer_1: selectedOption1.value,
+        answer_2: selectedOption2.value,
+        answer_3: selectedOption3.value,
+        rating: rating.value.toString(),
+        comment: feedbackController.text,
       );
+      isScreenProgress.value = false;
+      if (resp.ok == true) {
+        Get.snackbar(
+          "Success",
+          "Feedback submitted successfully",
+          backgroundColor: Colors.green,
+        );
+        // Clear fields if needed
+         clearFields();
+      } else {
+        Get.snackbar(
+          "Failed",
+          resp.msgs?.first.msg ?? 'Unknown error',
+          backgroundColor: Colors.red,
+        );
+      }
+    } catch (e) {
+      isScreenProgress.value = false;
+      if (e is DioError && e.response?.statusCode == 401) {
+        // Call the error API to get the error message
+        final errorMessage = await getErrorMessage(e.response?.data);
+        Get.snackbar(
+          "Error",
+          errorMessage,
+          backgroundColor: Colors.red,
+        );
+      } else if (e is DioError) {
+        // Call the error API to get the error message for other Dio errors
+        final errorMessage = await getErrorMessage(e.response?.data);
+        Get.snackbar(
+          "Error",
+          errorMessage,
+          backgroundColor: Colors.red,
+        );
+      } else {
+        // Handle other types of errors
+        Get.snackbar(
+          "Error",
+          "AMC service request feedback has been already submited",
+          backgroundColor: Colors.red,
+        );
+      }
     }
   }
 
+  void clearFields() {
+    selectedOption1.value = '';
+    selectedOption2.value = '';
+    selectedOption3.value = '';
+    feedbackController.text = '';
+  }
+
+
+  Future<String> getErrorMessage(dynamic responseData) async {
+    try {
+      // Parse the response data
+      final requestError = apiFeedbackRespFromJson(json.encode(responseData));
+      return requestError.message;
+    } catch (e) {
+      return 'Unknown error occurred';
+    }
+  }
   @override
   void onClose() {
     feedbackController.dispose();
     super.onClose();
   }
 }
+

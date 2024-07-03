@@ -13,7 +13,7 @@ abstract class FeedbackService {
   static Future<ApiResp> submitFeedback({
     required int customer_id,
     required int amc_id,
-    int? amc_service_id, // Allow amc_service_id to be nullable
+    required int amc_service_id,
     String? answer_1,
     String? answer_2,
     String? answer_3,
@@ -46,7 +46,7 @@ abstract class FeedbackService {
       }, title: 'Feedback Submission Failed');
 
       if (resp is DioError) {
-        handleErrorResponse(resp);
+        return handleErrorResponse(resp);
       } else {
         return ApiResp(
           ok: true,
@@ -59,23 +59,56 @@ abstract class FeedbackService {
       return ApiResp(
         ok: false,
         rdata: '',
-        msgs: [ApiMsg(msg: 'Error during submission: $e', title: 'Error', msgType: '')],
+        msgs: [ApiMsg(msg: 'Error during submission: AMC service request feedback has been already submited', title: 'Error', msgType: '')],
         message: '',
       );
     }
-
-    return ApiResp(ok: false, rdata: '', msgs: [], message: '');
   }
 
-  static void handleErrorResponse(DioError resp) {
-    if (resp.response?.statusCode == 400) {
-      showMsg("Invalid Details", "Submission Failed");
+  static ApiResp handleErrorResponse(DioError resp) {
+    if (resp.response?.statusCode == 401) {
+      final errorMsg = resp.response?.data['error'] ?? 'Unauthorized';
+      return ApiResp(
+        ok: false,
+        rdata: '',
+        msgs: [],
+        message: errorMsg,
+      );
+    } else if (resp.response?.statusCode == 400) {
+      return ApiResp(
+        ok: false,
+        rdata: '',
+        msgs: [ApiMsg(msg: 'Invalid Details', title: 'Submission Failed', msgType: '')],
+        message: '',
+      );
     } else if (resp.type == DioErrorType.connectTimeout) {
-      showMsg('Connection timed-out. Check internet connection.', "Submission Failed");
+      return ApiResp(
+        ok: false,
+        rdata: '',
+        msgs: [ApiMsg(msg: 'Connection timed-out. Check internet connection.', title: 'Submission Failed', msgType: '')],
+        message: '',
+      );
     } else if (resp.type == DioErrorType.receiveTimeout) {
-      showMsg('Unable to connect to the server', "Submission Failed");
+      return ApiResp(
+        ok: false,
+        rdata: '',
+        msgs: [ApiMsg(msg: 'Unable to connect to the server', title: 'Submission Failed', msgType: '')],
+        message: '',
+      );
     } else if (resp.type == DioErrorType.other) {
-      showMsg('Something went wrong with server communication', "Submission Failed");
+      return ApiResp(
+        ok: false,
+        rdata: '',
+        msgs: [ApiMsg(msg: 'Something went wrong with server communication', title: 'Submission Failed', msgType: '')],
+        message: '',
+      );
+    } else {
+      return ApiResp(
+        ok: false,
+        rdata: '',
+        msgs: [],
+        message: 'Unexpected error occurred',
+      );
     }
   }
 
@@ -83,4 +116,3 @@ abstract class FeedbackService {
     return 'YOUR_AUTH_TOKEN';
   }
 }
-

@@ -618,7 +618,12 @@ class BuildCardWidget extends StatelessWidget {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Get.toNamed(Routes.feedback);
+                                      Get.toNamed(Routes.feedback,
+                                          arguments: {
+                                            'amcId': controller.amcId ?? 0, // Provide a default value if amcId might be null
+                                            'serviceId': controller.amcdetails.value.serviceDates![2].serviceId ?? 0,
+
+                                          });
                                     },
                                     child: Text(
                                       "Write Your Feedback",
@@ -737,7 +742,11 @@ class BuildCardWidget extends StatelessWidget {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Get.toNamed(Routes.feedback);
+                                      Get.toNamed(Routes.feedback,
+                                          arguments: {
+                                            'amcId': controller.amcId ?? 0, // Provide a default value if amcId might be null
+                                            'serviceId': controller.amcdetails.value.serviceDates![3].serviceId ?? 0,
+                                          });
                                     },
                                     child: Text(
                                       "Write Your Feedback",
