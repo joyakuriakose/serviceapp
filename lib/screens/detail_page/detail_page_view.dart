@@ -24,17 +24,17 @@ class DetailView extends GetView<DetailPageController> {
         child: Scaffold(
             body: Background(
                 child: Padding(
-          padding: EdgeInsets.only(left: 20.0, right: 20),
-          child: Obx(
-            () => controller.isScreenProgress.value == true
-                ? Column(
-                    children: const [
-                      Expanded(child: Center(child: RoundedLoader()))
-                    ],
-                  )
-                : BuildCardWidget(controller: controller),
-          ),
-        ))));
+                  padding: EdgeInsets.only(left: 20.0, right: 20),
+                  child: Obx(
+                        () => controller.isScreenProgress.value == true
+                        ? Column(
+                      children: const [
+                        Expanded(child: Center(child: RoundedLoader()))
+                      ],
+                    )
+                        : BuildCardWidget(controller: controller),
+                  ),
+                ))));
   }
 }
 
@@ -290,7 +290,7 @@ class BuildCardWidget extends StatelessWidget {
                                 children: [
                                   Text(
                                     controller.amcdetails.value.remainingCount
-                                            .toString() ??
+                                        .toString() ??
                                         "",
                                     style: MyTheme.regularTextStyle(
                                         fontWeight: FontWeight.w700,
@@ -360,7 +360,7 @@ class BuildCardWidget extends StatelessWidget {
                             ),
                             SizedBox(height: Get.height * 0.001),
                             if (controller
-                                    .amcdetails.value.serviceDates![0].status ==
+                                .amcdetails.value.serviceDates![0].status ==
                                 "3")
                               Row(
                                 children: [
@@ -485,7 +485,7 @@ class BuildCardWidget extends StatelessWidget {
                             ),
                             SizedBox(height: Get.height * 0.001),
                             if (controller
-                                    .amcdetails.value.serviceDates![1].status ==
+                                .amcdetails.value.serviceDates![1].status ==
                                 "3")
                               Row(
                                 children: [
@@ -610,7 +610,7 @@ class BuildCardWidget extends StatelessWidget {
                             ),
                             SizedBox(height: Get.height * 0.001),
                             if (controller
-                                    .amcdetails.value.serviceDates![2].status ==
+                                .amcdetails.value.serviceDates![2].status ==
                                 "3")
                               Row(
                                 children: [
@@ -729,7 +729,7 @@ class BuildCardWidget extends StatelessWidget {
                             ),
                             SizedBox(height: Get.height * 0.001),
                             if (controller
-                                    .amcdetails.value.serviceDates![3].status ==
+                                .amcdetails.value.serviceDates![3].status ==
                                 "3")
                               Row(
                                 children: [
@@ -839,7 +839,7 @@ class BuildCardWidget extends StatelessWidget {
                           width: Get.width * 0.4,
                           child: Text(
                             controller.amcdetails.value.productCount
-                                    ?.toString() ??
+                                ?.toString() ??
                                 "",
                             style: MyTheme.regularTextStyle(
                               fontWeight: FontWeight.w700,

@@ -276,7 +276,7 @@ class FeedbackView extends GetView<FeedbackController> {
                 child: MAButton(
                   text: 'Submit',
                   buttonPress: () async {
-                     controller.feedbackSubmit();
+                    controller.feedbackSubmit();
                   },
                   isEnabled: true,
                   padding: const EdgeInsets.all(30),

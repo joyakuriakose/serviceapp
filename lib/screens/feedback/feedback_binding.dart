@@ -11,9 +11,9 @@ class FeedbackBindings extends Bindings {
     final Map<String, dynamic> arguments = Get.arguments as Map<String, dynamic>? ?? {};
     final int amcId = arguments['amcId'] ?? 0;
     final int serviceId = arguments['serviceId'] ?? 0; // Handle this if required
-
+    int? userId = App.user.id;
     Get.lazyPut<FeedbackController>(
-          () => FeedbackController(amcId, serviceId), // Pass both IDs if required
+          () => FeedbackController(amcId, serviceId,userId!), // Pass both IDs if required
     );
   }
 }

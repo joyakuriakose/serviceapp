@@ -11,12 +11,12 @@ import '../utils/mydio.dart';
 
 abstract class FeedbackService {
   static Future<ApiResp> submitFeedback({
-     int? customer_id,
-     int? amc_id,
-     int? amc_service_id,
-     String? answer_1,
-     String? answer_2,
-     String? answer_3,
+    required int customer_id,
+    required int amc_id,
+    int? amc_service_id, // Allow amc_service_id to be nullable
+    String? answer_1,
+    String? answer_2,
+    String? answer_3,
     String? rating,
     String? comment,
   }) async {
@@ -83,3 +83,4 @@ abstract class FeedbackService {
     return 'YOUR_AUTH_TOKEN';
   }
 }
+

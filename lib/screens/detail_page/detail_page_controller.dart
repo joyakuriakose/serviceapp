@@ -48,4 +48,3 @@ class DetailPageController extends GetxController {
   }
 }
 
-
