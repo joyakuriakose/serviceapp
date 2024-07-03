@@ -8,10 +8,10 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../../model/api_resp.dart';
 import '../../model/package_detail_model.dart';
 import '../../services/package_detail_services.dart';
+
 class DetailPageController extends GetxController {
   RxBool isScreenProgress = false.obs;
   Rx<AmcDetails> amcdetails = AmcDetails().obs;
-  Rx<ServiceDate> serviceDetails = ServiceDate().obs;
   int? amcId; // Define amcId property to hold the current amcId
   int? serviceId; // Define amcId property to hold the current amcId
 
@@ -20,12 +20,11 @@ class DetailPageController extends GetxController {
     super.onInit();
     // Retrieve amcId from arguments
     amcId = Get.arguments as int?;
-    serviceId = Get.arguments as int?;
     fetchDetails();
   }
 
   void fetchDetails() async {
-    if (amcId != null && serviceId != null) {
+    if (amcId != null) {
       await initialDataFetching(amcId!);
     } else {
       print("Error: amcId is null");

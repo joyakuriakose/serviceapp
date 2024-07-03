@@ -369,8 +369,9 @@ class BuildCardWidget extends StatelessWidget {
                                       Get.toNamed(
                                           Routes.feedback,
                                           arguments: {
-                                            'amcId': controller.amcId ?? 0, // Provide a default value if amcId might be null
-                                            'serviceId': controller.serviceId ?? 0 // Uncomment and provide a default value if needed
+                                            'amcId': controller.amcId ?? 0,
+                                            'serviceId': controller.amcdetails.value.serviceDates![0].serviceId ?? 0,
+// Provide a default value if amcId might be null
                                           }
                                       );
                                     },
@@ -495,7 +496,8 @@ class BuildCardWidget extends StatelessWidget {
                                           Routes.feedback,
                                           arguments: {
                                             'amcId': controller.amcId ?? 0, // Provide a default value if amcId might be null
-                                            'serviceId': controller.serviceId ?? 0 // Uncomment and provide a default value if needed
+                                            'serviceId': controller.amcdetails.value.serviceDates![1].serviceId ?? 0,
+
                                           }
                                       );
                                     },

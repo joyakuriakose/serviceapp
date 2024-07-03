@@ -17,19 +17,19 @@ class FeedbackController extends GetxController {
   RxString selectedOption2 = ''.obs;
   RxString selectedOption3 = ''.obs;
   RxInt rating = 0.obs;
-  bool isFeedbackEmpty = true;
+  RxBool isFeedbackEmpty = true.obs;
   final int amcId;
   final int userId;
-  final int serviceId; // Add this if needed
+  final int serviceId;
 
-  FeedbackController(this.amcId, this.serviceId, this.userId); // Adjust constructor if needed
+  FeedbackController(this.amcId, this.userId, this.serviceId);
 
   @override
   void onInit() {
     super.onInit();
 
     feedbackController.addListener(() {
-      isFeedbackEmpty = feedbackController.text.isEmpty;
+      isFeedbackEmpty.value = feedbackController.text.isEmpty;
     });
   }
 
@@ -49,10 +49,9 @@ class FeedbackController extends GetxController {
 
   void feedbackSubmit() async {
     ApiResp resp = await FeedbackService.submitFeedback(
-      customer_id: userId, // Adjust parameter name if needed
+      customer_id: userId,
       amc_id: amcId,
       amc_service_id: serviceId,
-      // Add serviceId parameter if needed in your API call
       answer_1: selectedOption1.value,
       answer_2: selectedOption2.value,
       answer_3: selectedOption3.value,

@@ -250,27 +250,30 @@ class FeedbackView extends GetView<FeedbackController> {
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: controller.feedbackController,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: controller.isFeedbackEmpty
-                          ? "Write Your Feedback...."
-                          : null,
-                      hintStyle: TextStyle(
+                  child: Obx(
+                        () => TextFormField(
+                      controller: controller.feedbackController,
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 17,
                         fontWeight: FontWeight.w400,
                       ),
-                      border: InputBorder.none,
+                      decoration: InputDecoration(
+                        hintText: controller.isFeedbackEmpty.value
+                            ? "Write Your Feedback...."
+                            : null,
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
                 ),
               ),
+
               SizedBox(height: Get.height * 0.02),
               Center(
                 child: MAButton(
