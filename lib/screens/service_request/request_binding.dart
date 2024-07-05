@@ -6,12 +6,20 @@ import 'package:serviceapp/screens/service_request/request_controller.dart';
 import '../../app.dart';
 
 
-
 class RequestBindings extends Bindings {
+  final int activeStatus;
+
+  RequestBindings(this.activeStatus);
+
   @override
   void dependencies() {
     int? userId = App.user.id;
-  //  int amcId = App.amcuser.id ?? 42; // Use 0 as a default value if null
-    Get.lazyPut<RequestController>(() => RequestController(userId!));
+    if (userId != null) {
+      Get.lazyPut<RequestController>(() => RequestController(userId, activeStatus));
+    } else {
+      // Handle the case where userId is null
+      print('Error: userId is null');
+    }
   }
 }
+

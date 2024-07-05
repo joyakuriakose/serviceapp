@@ -118,8 +118,9 @@ class RequestController extends GetxController {
   final TextEditingController serviceRequestController = TextEditingController();
   final TextEditingController demandsController = TextEditingController();
   final int id;
+  final int active;
 
-  RequestController(this.id);
+  RequestController(this.id, this.active);
 
   @override
   void onInit() {
@@ -131,7 +132,7 @@ class RequestController extends GetxController {
 
   void initialAcListt() async {
     try {
-      ApiResp? resp = await AmcListServices.fetchAmcList(id);
+      ApiResp? resp = await AmcListServices.fetchAmcList(id, active);
       if (resp != null && resp.ok == true) {
         var packageListingModel = GetAmcList.fromJson(resp.rdata);
         amclist.value = packageListingModel.amcList;

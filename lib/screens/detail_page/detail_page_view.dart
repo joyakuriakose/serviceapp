@@ -71,7 +71,8 @@ class BuildCardWidget extends StatelessWidget {
 
   String _formatDate(DateTime? dateTime) {
     if (dateTime != null) {
-      return "${dateTime.day}-${dateTime.month}-${dateTime.year}";
+
+      return "${dateTime.year}-${dateTime.month}-${dateTime.day}";
     } else {
       return "--------"; // Display a message for null values
     }
@@ -336,9 +337,7 @@ class BuildCardWidget extends StatelessWidget {
                               gradient: LinearGradient(
                                 colors: [
                                   Color.fromRGBO(66, 94, 236, 1),
-                                  // Start color
                                   Color.fromRGBO(34, 61, 192, 1),
-                                  // End color
                                 ],
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
@@ -358,46 +357,51 @@ class BuildCardWidget extends StatelessWidget {
                               ),
                               SizedBox(height: Get.height * 0.001),
                               Text(
-                                getStatusText(controller
-                                    .amcdetails.value.serviceDates![0].status),
+                                getStatusText(controller.amcdetails.value.serviceDates![0].status),
                                 style: MyTheme.regularTextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: Get.height * 0.018,
                                 ),
                               ),
                               SizedBox(height: Get.height * 0.001),
-                              if (controller.amcdetails.value.serviceDates![0]
-                                      .status ==
-                                  "3")
+                              if (controller.amcdetails.value.serviceDates![0].status == "3")
                                 Row(
                                   children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.toNamed(Routes.feedback,
-                                            arguments: {
-                                              'amcId': controller.amcId ?? 0,
-                                              'serviceId': controller
-                                                      .amcdetails
-                                                      .value
-                                                      .serviceDates![0]
-                                                      .serviceId ??
-                                                  0,
-// Provide a default value if amcId might be null
-                                            });
-                                      },
-                                      child: Text(
-                                        "Write Your Feedback",
-                                        style: MyTheme.regularTextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: Get.height * 0.018,
-                                          color: Colors.indigo,
-                                        ),
+                                    controller.amcdetails.value.serviceDates![0].feedbackStatus == 1
+                                        ? Text(
+                                      "Thank you for your feedback",
+                                      style: MyTheme.regularTextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Get.height * 0.018,
+                                        color: Colors.indigo,
                                       ),
-                                    ),
-                                    SizedBox(width: Get.width * 0.02),
-                                    Icon(
-                                      Icons.edit,
-                                      color: Colors.indigo,
+                                    )
+                                        : InkWell(
+                                      onTap: () {
+                                        Get.toNamed(Routes.feedback, arguments: {
+                                          'amcId': controller.amcId ?? 0,
+                                          'serviceId': controller
+                                              .amcdetails.value.serviceDates![0].serviceId ??
+                                              0,
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Write Your Feedback",
+                                            style: MyTheme.regularTextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: Get.height * 0.018,
+                                              color: Colors.indigo,
+                                            ),
+                                          ),
+                                          SizedBox(width: Get.width * 0.02),
+                                          Icon(
+                                            Icons.edit,
+                                            color: Colors.indigo,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -500,6 +504,16 @@ class BuildCardWidget extends StatelessWidget {
                                   "3")
                                 Row(
                                   children: [
+                                    controller.amcdetails.value.serviceDates![1].feedbackStatus == 1
+                                        ? Text(
+                                      "Thank you for your feedback",
+                                      style: MyTheme.regularTextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Get.height * 0.018,
+                                        color: Colors.indigo,
+                                      ),
+                                    )
+                                        :
                                     InkWell(
                                       onTap: () {
                                         Get.toNamed(Routes.feedback,
@@ -522,11 +536,6 @@ class BuildCardWidget extends StatelessWidget {
                                           color: Colors.indigo,
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(width: Get.width * 0.02),
-                                    Icon(
-                                      Icons.edit,
-                                      color: Colors.indigo,
                                     ),
                                   ],
                                 ),
@@ -629,6 +638,16 @@ class BuildCardWidget extends StatelessWidget {
                                   "3")
                                 Row(
                                   children: [
+                                    controller.amcdetails.value.serviceDates![2].feedbackStatus == 1
+                                        ? Text(
+                                      "Thank you for your feedback",
+                                      style: MyTheme.regularTextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Get.height * 0.018,
+                                        color: Colors.indigo,
+                                      ),
+                                    )
+                                        :
                                     InkWell(
                                       onTap: () {
                                         Get.toNamed(Routes.feedback,
@@ -651,11 +670,6 @@ class BuildCardWidget extends StatelessWidget {
                                           color: Colors.indigo,
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(width: Get.width * 0.02),
-                                    Icon(
-                                      Icons.edit,
-                                      color: Colors.indigo,
                                     ),
                                   ],
                                 ),
@@ -758,6 +772,16 @@ class BuildCardWidget extends StatelessWidget {
                                   "3")
                                 Row(
                                   children: [
+                                    controller.amcdetails.value.serviceDates![3].feedbackStatus == 1
+                                        ? Text(
+                                      "Thank you for your feedback",
+                                      style: MyTheme.regularTextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: Get.height * 0.018,
+                                        color: Colors.indigo,
+                                      ),
+                                    )
+                                        :
                                     InkWell(
                                       onTap: () {
                                         Get.toNamed(Routes.feedback,
@@ -780,11 +804,6 @@ class BuildCardWidget extends StatelessWidget {
                                           color: Colors.indigo,
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(width: Get.width * 0.02),
-                                    Icon(
-                                      Icons.edit,
-                                      color: Colors.indigo,
                                     ),
                                   ],
                                 ),

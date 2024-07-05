@@ -60,7 +60,7 @@ class Routes {
       page: () =>  FeedbackView(),
     ),
     GetPage(
-      binding: RequestBindings(),
+      binding: RequestBindings(1),
       name: service,
       page: () =>  RequestView(),
     ),

@@ -89,12 +89,14 @@ class ServiceDate {
   DateTime? date;
   String? type;
   String? status;
+  int? feedbackStatus;
 
   ServiceDate({
     this.serviceId,
     this.date,
     this.type,
     this.status,
+    this.feedbackStatus,
   });
 
   factory ServiceDate.fromJson(Map<String, dynamic> json) => ServiceDate(
@@ -102,6 +104,7 @@ class ServiceDate {
     date: DateTime.parse(json["date"]),
     type: json["type"],
     status: json["status"],
+    feedbackStatus: json["feedback_status"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -109,6 +112,8 @@ class ServiceDate {
     "date": "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
     "type": type,
     "status": status,
+    "feedback_status": feedbackStatus,
   };
 }
+
 

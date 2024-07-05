@@ -15,10 +15,10 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
 abstract class AmcListServices {
-  static Future<ApiResp> fetchAmcList(int customer_id) async {
+  static Future<ApiResp> fetchAmcList(int customer_id,active) async {
     dynamic resp;
     await errMAsync(() async {
-      resp = await MyDio().get('https://seowebsites.in/service_management/api/v1/get-amc-list?customer_id=$customer_id');
+      resp = await MyDio().get('https://seowebsites.in/service_management/api/v1/get-amc-list?customer_id=$customer_id && active= $active');
     });
 
     return resp != null
