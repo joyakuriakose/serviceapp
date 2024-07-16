@@ -22,6 +22,7 @@ import 'package:get/get.dart';
 
 class AcListingView extends GetView<AcListingController> {
   const AcListingView({Key? key}) : super(key: key);
+
   String _formatDate(DateTime? dateTime) {
     if (dateTime != null) {
       return "${dateTime.year}-${dateTime.month}-${dateTime.day}";
@@ -29,6 +30,7 @@ class AcListingView extends GetView<AcListingController> {
       return "--------"; // Display a message for null values
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -36,32 +38,64 @@ class AcListingView extends GetView<AcListingController> {
           MyUtils.hideKeyboard();
         },
         child: Scaffold(
-            body: Stack(children: [
-          Background(
-            child: Padding(
-              padding: EdgeInsets.only(left: 20.0, right: 20),
-              child: AppRefresh(
-                refreshFunction: () =>
-                    controller.refresh(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          'assets/png/applogo.png',
-                          width: Get.width * 0.12,
-                        ),
-                        SizedBox(width: Get.width * 0.50),
-                        IconButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.notificationsPage);
-                          },
-                          icon: Icon(
-                            Icons.notifications_none_outlined,
-                            color: Colors.white,
-                          ),
+            body: Stack(
+                children: [
+                  Background(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20.0, right: 20),
+                      child: AppRefresh(
+                        refreshFunction: () => controller.refresh(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  'assets/png/applogo.png',
+                                  width: Get.width * 0.12,
+                                ),
+                                SizedBox(width: Get.width * 0.50),
+                                Stack(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Get.toNamed(Routes.notificationsPage);
+                                      },
+                                      icon: Icon(
+                                        Icons.notifications_none_outlined,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 8,
+                                      top: 8,
+                                      child: Container(
+                                        padding: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        constraints: BoxConstraints(
+                                          minWidth: 16,
+                                          minHeight: 16,
+                                        ),
+                                        child: Obx(() {
+                                          int unseenCount = controller.notifications
+                                              .where((notification) => notification.status == '0')
+                                              .length;
+                                          return Text(
+                                            '$unseenCount',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                  );
+                                }),
+                              ),
+                            ),
+                          ],
                         ),
                         IconButton(
                           onPressed: () {

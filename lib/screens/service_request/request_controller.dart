@@ -154,7 +154,7 @@ class RequestController extends GetxController {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2020),
+      firstDate: DateTime.now(), // Restrict to today and future dates
       lastDate: DateTime(2101),
     );
 
@@ -163,6 +163,7 @@ class RequestController extends GetxController {
       dateCtrl.text = formattedDate;
     }
   }
+
   Future<void> submitServiceRequest() async {
     isScreenProgress.value = true;
     try {

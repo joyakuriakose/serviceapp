@@ -13,37 +13,25 @@ import '../utils/err_m.dart';
 import '../utils/mydio.dart';
 import 'package:http/http.dart' as http;
 
-
 abstract class NotificationServices {
   static Future<ApiResp> fetchNotificationList(int customer_id) async {
     dynamic resp;
     await errMAsync(() async {
       resp = await MyDio().get('https://seowebsites.in/service_management/api/v1/notification?customer_id=$customer_id');
     });
-    respNew = resp != null
+    return resp != null
         ? ApiResp(
       ok: true,
       rdata: resp,
-      msgs: [
-        ApiMsg(
-          msg: "",
-          msgType: "",
-          title: "Success",
-        )
-      ], message: '',
+      msgs: [ApiMsg(msg: "", msgType: "", title: "Success")],
+      message: '',
     )
         : ApiResp(
       ok: false,
       rdata: resp,
-      msgs: [
-        ApiMsg(
-          msg: "Server response failed",
-          msgType: "0",
-          title: "Failed",
-        )
-      ], message: '',
+      msgs: [ApiMsg(msg: "Server response failed", msgType: "0", title: "Failed")],
+      message: '',
     );
-    return respNew;
   }
 }
 

@@ -15,6 +15,6 @@ abstract class App{
   static AmcList amcuser = AmcList(id: 42); // Initialize with a default id
   static List<AmcDetail> amcdatas = [];
   static List<Customer> custom = [];
-  static List<Notification> notification = [];
+  static List<Notificationss> notification = [];
 
 }

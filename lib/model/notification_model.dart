@@ -10,7 +10,7 @@ String notificationModelToJson(NotificationModel data) => json.encode(data.toJso
 
 class NotificationModel {
   String message;
-  List<Notification> notification;
+  List<Notificationss> notification;
 
   NotificationModel({
     required this.message,
@@ -19,7 +19,7 @@ class NotificationModel {
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
     message: json["message"],
-    notification: List<Notification>.from(json["notification"].map((x) => Notification.fromJson(x))),
+    notification: List<Notificationss>.from(json["notification"].map((x) => Notificationss.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -28,18 +28,18 @@ class NotificationModel {
   };
 }
 
-class Notification {
+class Notificationss {
   int? id;
   String? description;
   String? status;
 
-  Notification({
+  Notificationss({
     this.id,
     this.description,
     this.status,
   });
 
-  factory Notification.fromJson(Map<String, dynamic> json) => Notification(
+  factory Notificationss.fromJson(Map<String, dynamic> json) => Notificationss(
     id: json["id"],
     description: json["description"],
     status: json["status"],
@@ -51,3 +51,4 @@ class Notification {
     "status": status,
   };
 }
+

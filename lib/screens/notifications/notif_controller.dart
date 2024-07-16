@@ -9,7 +9,7 @@ import '../../services/notification_services.dart';
 
 class NotificationController extends GetxController {
 
-  RxList<Notification> notifications = <Notification>[].obs;
+  RxList<Notificationss> notifications = <Notificationss>[].obs;
   RxBool isScreenProgress = false.obs;
   RxBool isLoading = true.obs;
   final int customer_id;
