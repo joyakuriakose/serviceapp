@@ -14,12 +14,12 @@ import '../../services/package_listing_services.dart';
 import '../../utils/routes.dart';
 
 class AcListingController extends GetxController {
-  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
-  GlobalKey<RefreshIndicatorState>();
+  //final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+ // GlobalKey<RefreshIndicatorState>();
   RxList<AmcDetail> amcdetail = <AmcDetail>[].obs;
   RxList<Customer> customer = <Customer>[].obs;
   RxBool isScreenProgress = false.obs;
-
+  RxBool isLoading = true.obs;
   final int id;
 
   AcListingController(this.id);

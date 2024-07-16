@@ -373,25 +373,25 @@ class RequestView extends GetView<RequestController> {
                         ),
                       ],
                     ),
-                    SizedBox(height: Get.height * 0.040),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Container(
-                        width: Get.width * 0.8,
-                        height: Get.height * 0.001,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromRGBO(221, 208, 208, 1), // Start color
-                              Color.fromRGBO(221, 208, 208, 1), // End color
-                            ],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: Get.height * 0.035),
+                    // SizedBox(height: Get.height * 0.040),
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: 20),
+                    //   child: Container(
+                    //     width: Get.width * 0.8,
+                    //     height: Get.height * 0.001,
+                    //     decoration: BoxDecoration(
+                    //       gradient: LinearGradient(
+                    //         colors: [
+                    //           Color.fromRGBO(221, 208, 208, 1), // Start color
+                    //           Color.fromRGBO(221, 208, 208, 1), // End color
+                    //         ],
+                    //         begin: Alignment.centerLeft,
+                    //         end: Alignment.centerRight,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                   // SizedBox(height: Get.height * 0.035),
                     Center(
                       child: MAButton(
                         text: 'Submit',

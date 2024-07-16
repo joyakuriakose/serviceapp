@@ -135,7 +135,7 @@ class RequestController extends GetxController {
       ApiResp? resp = await AmcListServices.fetchAmcList(id, active);
       if (resp != null && resp.ok == true) {
         var packageListingModel = GetAmcList.fromJson(resp.rdata);
-        amclist.value = packageListingModel.amcList;
+        amclist.value = packageListingModel.amcList!;
         amcCodes.value = amclist.map((amc) {
           if (amc.code != null && amc.id != null) {
             amcCodeToIdMap[amc.code!] = amc.id!;
@@ -192,7 +192,7 @@ class RequestController extends GetxController {
 
       if (resp.ok == true) {
         Get.snackbar("Success", "Service request submitted successfully",
-          backgroundColor: Colors.green,);
+          backgroundColor: Colors.white,);
         clearFields();
       } else {
         Get.snackbar("Failed", resp.msgs?.first.msg ?? 'Unknown error',
@@ -213,7 +213,7 @@ class RequestController extends GetxController {
       }
       else {
         // Handle other types of errors
-        Get.snackbar("Error", "AMC Services already is on",
+        Get.snackbar("Error", "AMC Services already is on/completed",
           backgroundColor: Colors.red,);
       }
     }

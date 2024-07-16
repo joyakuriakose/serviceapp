@@ -77,47 +77,50 @@ class NotificationView extends GetView<NotificationController> {
                               );
                             } else {
                               return Container(
-                                height: Get.height * 0.6, // Adjust the height as per your requirements
+                                height: Get.height * 0.7, // Adjust the height as per your requirements
                                 child: ListView.builder(
                                   itemCount: controller.notifications.length,
                                   itemBuilder: (context, index) {
                                     final notiFications = controller.notifications[index];
-                                    return Row(
-                                      children: [
-                                        Container(
-                                          width: Get.width * 0.014,
-                                          height: Get.height * 0.07,
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color.fromRGBO(66, 94, 236, 1),
-                                                Color.fromRGBO(34, 61, 192, 1),
-                                              ],
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
+                                    return Padding(
+                                      padding:  EdgeInsets.only(bottom: 8.0,top: 8.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: Get.width * 0.014,
+                                            height: Get.height * 0.07,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color.fromRGBO(66, 94, 236, 1),
+                                                  Color.fromRGBO(34, 61, 192, 1),
+                                                ],
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(width: Get.width * 0.02),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                notiFications.description != null &&
-                                                    notiFications.description!.isNotEmpty
-                                                    ? notiFications.description!
-                                                    : '',
-                                                style: MyTheme.regularTextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: Get.height * 0.019,
-                                                  color: Colors.white,
+                                          SizedBox(width: Get.width * 0.02),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  notiFications.description != null &&
+                                                      notiFications.description!.isNotEmpty
+                                                      ? notiFications.description!
+                                                      : '',
+                                                  style: MyTheme.regularTextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: Get.height * 0.019,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     );
                                   },
                                 ),

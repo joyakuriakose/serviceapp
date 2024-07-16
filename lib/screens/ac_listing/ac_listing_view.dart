@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:serviceapp/components/app_refresh.dart';
+import 'package:serviceapp/utils/local_store.dart';
 
 import '../../app.dart';
 import '../../components/app_background.dart';
 import '../../components/app_buttons.dart';
+import '../../components/app_empty.dart';
 import '../../components/rounded_loader.dart';
 import '../../model/package_listing_model.dart';
 import '../../utils/my_theme.dart';
@@ -34,36 +37,39 @@ class AcListingView extends GetView<AcListingController> {
         },
         child: Scaffold(
             body: Stack(children: [
-          RefreshIndicator(
-            key: controller.refreshIndicatorKey,
-            onRefresh: () async {
-              controller.refresh();
-            },
-            color: Colors.yellow,
-            backgroundColor: Colors.red,
-            strokeWidth: 5,
-            displacement: 200,
-            edgeOffset: 20,
-            triggerMode: RefreshIndicatorTriggerMode.onEdge,
-            child: Background(
-              child: Padding(
-                padding: EdgeInsets.only(left: 20.0, right: 20),
+          Background(
+            child: Padding(
+              padding: EdgeInsets.only(left: 20.0, right: 20),
+              child: AppRefresh(
+                refreshFunction: () =>
+                    controller.refresh(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Image.asset(
                           'assets/png/applogo.png',
                           width: Get.width * 0.12,
                         ),
+                        SizedBox(width: Get.width * 0.50),
                         IconButton(
                           onPressed: () {
                             Get.toNamed(Routes.notificationsPage);
                           },
                           icon: Icon(
                             Icons.notifications_none_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            LocalStore.clearData();
+                            Get.offNamed(Routes.login);
+                          },
+                          icon: Icon(
+                            Icons.logout,
                             color: Colors.white,
                           ),
                         ),
@@ -235,8 +241,24 @@ class AcListingView extends GetView<AcListingController> {
                     Expanded(
                       child: Stack(children: [
                         Obx(() {
-                          if (controller.amcdetail.isEmpty) {
-                            return Center(child: RoundedLoader());
+                          bool isLoading = controller.isLoading.value;
+                          final amcDetail = controller.amcdetail;
+                          if (isLoading) {
+                            Future.delayed(Duration(seconds: 2), () {
+                              controller.isLoading.value = false;
+                            });
+                            return Center(
+                              child: Padding(
+                                padding:  EdgeInsets.only(top:  Get.height * 0.3),
+                                child: RoundedLoader(),
+                              ),
+                            );
+                          } else if (amcDetail.isEmpty) {
+                            return Center(
+                              child: MAResultEmpty(
+                                msg: 'Results Empty',
+                              ),
+                            );
                           } else {
                             return ListView.builder(
                               itemCount: controller.amcdetail.length,

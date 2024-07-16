@@ -45,5 +45,10 @@ class DetailPageController extends GetxController {
       isScreenProgress.value = false;
     }
   }
+
+  @override
+  Future<void> refresh() {
+    return Future.delayed(Duration(seconds: 5), () => initialDataFetching(amcId!));
+  }
 }
 

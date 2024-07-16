@@ -7,14 +7,18 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:serviceapp/screens/detail_page/detail_page_controller.dart';
 
 import '../../model/api_feedback_resp.dart';
 import '../../model/api_resp.dart';
+import '../../model/package_detail_model.dart';
 import '../../services/feedback_services.dart';
+import '../../services/package_detail_services.dart';
 import '../../utils/my_utils.dart';
 import '../../utils/routes.dart';
 
 class FeedbackController extends GetxController {
+  DetailPageController dcontroller = Get.find<DetailPageController>();
   TextEditingController feedbackController = TextEditingController();
   RxString selectedOption1 = ''.obs;
   RxString selectedOption2 = ''.obs;
@@ -35,6 +39,7 @@ class FeedbackController extends GetxController {
     feedbackController.addListener(() {
       isFeedbackEmpty.value = feedbackController.text.isEmpty;
     });
+    fetchDetails();
   }
 
   void selectOption(int question, int option) {
@@ -52,6 +57,15 @@ class FeedbackController extends GetxController {
   }
 
   void feedbackSubmit() async {
+    // Check if all required fields are filled
+    if (selectedOption1.value.isEmpty || selectedOption2.value.isEmpty || selectedOption3.value.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Please select an option for all questions",
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
     try {
       isScreenProgress.value = true;
       ApiResp resp = await FeedbackService.submitFeedback(
@@ -69,7 +83,7 @@ class FeedbackController extends GetxController {
         Get.snackbar(
           "Success",
           "Feedback submitted successfully",
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.white,
         );
         // Clear fields if needed
          clearFields();
@@ -114,6 +128,7 @@ class FeedbackController extends GetxController {
     selectedOption2.value = '';
     selectedOption3.value = '';
     feedbackController.text = '';
+    rating.value = 0;
   }
 
 
@@ -130,6 +145,31 @@ class FeedbackController extends GetxController {
   void onClose() {
     feedbackController.dispose();
     super.onClose();
+
+  }
+  void fetchDetails() async {
+    if (amcId != null) {
+      await initialDataFetching(amcId!);
+    } else {
+      print("Error: amcId is null");
+    }
+  }
+
+  Rx<AmcDetails> amcdetails = AmcDetails().obs;
+
+  Future<void> initialDataFetching(int amcId) async {
+    isScreenProgress.value = true;
+    final ApiResp itemDetailsResp = await PackageDetailServices.fetchPackageDetails(amcId);
+
+    if (itemDetailsResp.ok == null || !itemDetailsResp.ok!) {
+      isScreenProgress.value = false;
+      return;
+    } else {
+      amcdetails.value = AmcDetails.fromJson(itemDetailsResp.rdata['amc_details']);
+      // Log the response
+      print('Item Response: ${itemDetailsResp.rdata}');
+      isScreenProgress.value = false;
+    }
   }
 }
 
