@@ -4,6 +4,8 @@ import 'model/get_amclist_model.dart';
 import 'model/notification_model.dart';
 import 'model/package_detail_model.dart';
 import 'model/package_listing_model.dart';
+import 'model/product_list_model.dart';
+import 'model/service_history_model.dart';
 import 'model/user_model.dart';
 
 abstract class App{
@@ -16,5 +18,8 @@ abstract class App{
   static List<AmcDetail> amcdatas = [];
   static List<Customer> custom = [];
   static List<Notificationss> notification = [];
+  static List<ProductList> productLists = [];
+  static List<ServiceHistory> serviceHistory = [];
+
 
 }

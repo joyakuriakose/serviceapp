@@ -44,7 +44,7 @@ abstract class ServiceRequestServices {
         return ApiResp(
           ok: true,
           rdata: resp,
-          msgs: [ApiMsg(msg: "", msgType: "", title: "Success")],
+          msgs: [],
           message: '',
         );
       }
@@ -53,7 +53,7 @@ abstract class ServiceRequestServices {
       return ApiResp(
         ok: false,
         rdata: '',
-        msgs: [ApiMsg(msg: 'Error during fetchUser: $e', title: 'Error', msgType: '')],
+        msgs: [],
         message: '',
       );
     }

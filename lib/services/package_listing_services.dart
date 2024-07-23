@@ -25,22 +25,14 @@ abstract class PackageListServices {
       ok: true,
       rdata: resp,
       msgs: [
-        ApiMsg(
-          msg: "",
-          msgType: "",
-          title: "Success",
-        )
+
       ], message: '',
     )
         : ApiResp(
       ok: false,
       rdata: resp,
       msgs: [
-        ApiMsg(
-          msg: "Server response failed",
-          msgType: "0",
-          title: "Failed",
-        )
+
       ], message: '',
     );
     return respNew;

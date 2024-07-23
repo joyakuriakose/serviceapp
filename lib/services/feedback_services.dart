@@ -51,68 +51,46 @@ abstract class FeedbackService {
         return ApiResp(
           ok: true,
           rdata: resp,
-          msgs: [ApiMsg(msg: "", msgType: "", title: "Success")],
-          message: '',
+          msgs: [],  // Assuming no messages on success
+          message: 'Feedback submitted successfully',
         );
       }
     } catch (e) {
       return ApiResp(
         ok: false,
         rdata: '',
-        msgs: [ApiMsg(msg: 'Error during submission: AMC service request feedback has been already submited', title: 'Error', msgType: '')],
+        msgs: ['Error during submission: AMC service request feedback has been already submitted'],
         message: '',
       );
     }
   }
 
   static ApiResp handleErrorResponse(DioError resp) {
+    String message = '';
     if (resp.response?.statusCode == 401) {
-      final errorMsg = resp.response?.data['error'] ?? 'Unauthorized';
-      return ApiResp(
-        ok: false,
-        rdata: '',
-        msgs: [],
-        message: errorMsg,
-      );
+      message = resp.response?.data['error'] ?? 'Unauthorized';
     } else if (resp.response?.statusCode == 400) {
-      return ApiResp(
-        ok: false,
-        rdata: '',
-        msgs: [ApiMsg(msg: 'Invalid Details', title: 'Submission Failed', msgType: '')],
-        message: '',
-      );
+      message = 'Invalid Details';
     } else if (resp.type == DioErrorType.connectTimeout) {
-      return ApiResp(
-        ok: false,
-        rdata: '',
-        msgs: [ApiMsg(msg: 'Connection timed-out. Check internet connection.', title: 'Submission Failed', msgType: '')],
-        message: '',
-      );
+      message = 'Connection timed-out. Check internet connection.';
     } else if (resp.type == DioErrorType.receiveTimeout) {
-      return ApiResp(
-        ok: false,
-        rdata: '',
-        msgs: [ApiMsg(msg: 'Unable to connect to the server', title: 'Submission Failed', msgType: '')],
-        message: '',
-      );
+      message = 'Unable to connect to the server';
     } else if (resp.type == DioErrorType.other) {
-      return ApiResp(
-        ok: false,
-        rdata: '',
-        msgs: [ApiMsg(msg: 'Something went wrong with server communication', title: 'Submission Failed', msgType: '')],
-        message: '',
-      );
+      message = 'Something went wrong with server communication';
     } else {
-      return ApiResp(
-        ok: false,
-        rdata: '',
-        msgs: [],
-        message: 'Unexpected error occurred',
-      );
+      message = 'Unexpected error occurred';
     }
+
+    return ApiResp(
+      ok: false,
+      rdata: '',
+      msgs: [message],
+      message: message,
+    );
   }
 
   static Future<String> getToken() async {
+    // Implement your token retrieval logic here
     return 'YOUR_AUTH_TOKEN';
   }
 }

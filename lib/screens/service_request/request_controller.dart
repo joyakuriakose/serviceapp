@@ -143,7 +143,7 @@ class RequestController extends GetxController {
           return amc.code ?? '';
         }).toList();
       } else {
-        print("Error: ${resp?.msgs?.first.msg}");
+        print("Error: ${resp.message}");
       }
     } catch (e) {
       print("Error in initialAcListt: $e");
@@ -163,17 +163,49 @@ class RequestController extends GetxController {
       dateCtrl.text = formattedDate;
     }
   }
-
   Future<void> submitServiceRequest() async {
     isScreenProgress.value = true;
+
     try {
+      // Check if required fields are empty
+      if (serviceRequestType.value == 'Service Type ') {
+        Get.snackbar(
+          "Error",
+          "Please select a service request type",
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 3),
+        );
+        isScreenProgress.value = false;
+        return;
+      }
+
+      if (serviceRequestType.value == 'AMC' && selectedAmcCode.value.isEmpty) {
+        Get.snackbar(
+          "Error",
+          "Please select an AMC code",
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 3),
+        );
+        isScreenProgress.value = false;
+        return;
+      }
+
+      // if (demandsController.text.isEmpty) {
+      //   Get.snackbar(
+      //     "Error",
+      //     "Please enter a demand",
+      //     backgroundColor: Colors.red,
+      //     snackPosition: SnackPosition.TOP,
+      //     duration: Duration(seconds: 3),
+      //   );
+      //   isScreenProgress.value = false;
+      //   return;
+      // }
+
       ApiResp resp;
       if (serviceRequestType.value == 'AMC') {
-        if (selectedAmcCode.value.isEmpty) {
-          Get.snackbar("Error", "Please select an AMC code");
-          isScreenProgress.value = false;
-          return;
-        }
         int amcId = amcCodeToIdMap[selectedAmcCode.value]!;
         resp = await ServiceRequestServices.fetchUser(
           customer_id: id,
@@ -191,34 +223,52 @@ class RequestController extends GetxController {
       }
       isScreenProgress.value = false;
 
+      // Log the response for debugging
+      print("Response: ${resp.toJson()}");
+
       if (resp.ok == true) {
-        Get.snackbar("Success", "Service request submitted successfully",
-          backgroundColor: Colors.white,);
-        clearFields();
+        String successMessage = resp.message ?? "Success";
+        String additionalMessage = resp.rdata != null ? resp.rdata['message'] ?? "" : "";
+        String finalMessage = "$successMessage $additionalMessage".trim();
+
+        print("Success Message: $finalMessage");
+
+        Get.snackbar("Success", finalMessage,
+          backgroundColor: Colors.white,
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 3),
+        );
+        clearFields(); // Assuming this clears form fields
       } else {
-        Get.snackbar("Failed", resp.msgs?.first.msg ?? 'Unknown error',
-          backgroundColor: Colors.red,);
+        String errorMessage = resp.message ?? "Unknown error";
+        String additionalMessage = resp.rdata != null ? resp.rdata['message'] ?? "" : "";
+        String finalMessage = "$errorMessage $additionalMessage".trim();
+        print("Error Message: $errorMessage");
+        Get.snackbar("Failed", errorMessage,
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 3),
+        );
       }
     } catch (e) {
       isScreenProgress.value = false;
+      String errorMessage = '';
       if (e is DioError && e.response?.statusCode == 401) {
-        // Call the error API to get the error message
-        final errorMessage = await getErrorMessage(e.response?.data);
-        Get.snackbar("Error", errorMessage,
-          backgroundColor: Colors.red,);
+        errorMessage = await getErrorMessage(e.response?.data);
       } else if (e is DioError) {
-        // Call the error API to get the error message for other Dio errors
-        final errorMessage = await getErrorMessage(e.response?.data);
-        Get.snackbar("Error", errorMessage,
-          backgroundColor: Colors.red,);
+        errorMessage = await getErrorMessage(e.response?.data);
+      } else {
+        errorMessage = "An unexpected error occurred";
       }
-      else {
-        // Handle other types of errors
-        Get.snackbar("Error", "AMC Services already is on/completed",
-          backgroundColor: Colors.red,);
-      }
+      print("Catch Error Message: $errorMessage");
+      Get.snackbar("Error", errorMessage,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 3),
+      );
     }
   }
+
 
 // Method to get the error message from the error API
   Future<String> getErrorMessage(dynamic responseData) async {

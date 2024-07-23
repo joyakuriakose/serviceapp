@@ -4,10 +4,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:serviceapp/components/app_refresh.dart';
 import 'package:serviceapp/utils/local_store.dart';
-
 import '../../app.dart';
 import '../../components/app_background.dart';
 import '../../components/app_buttons.dart';
+import '../../components/app_buynow_button.dart';
 import '../../components/app_empty.dart';
 import '../../components/rounded_loader.dart';
 import '../../model/package_listing_model.dart';
@@ -15,10 +15,8 @@ import '../../utils/my_theme.dart';
 import '../../utils/my_utils.dart';
 import '../../utils/routes.dart';
 import 'ac_listing_controller.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 
 class AcListingView extends GetView<AcListingController> {
   const AcListingView({Key? key}) : super(key: key);
@@ -38,64 +36,70 @@ class AcListingView extends GetView<AcListingController> {
           MyUtils.hideKeyboard();
         },
         child: Scaffold(
-            body: Stack(
-                children: [
-                  Background(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.0, right: 20),
-                      child: AppRefresh(
-                        refreshFunction: () => controller.refresh(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            body: Stack(children: [
+          Background(
+            child: Padding(
+              padding: EdgeInsets.only(left: 20.0, right: 20),
+              child: AppRefresh(
+                refreshFunction: () => controller.refresh(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'assets/png/applogo.png',
+                          width: Get.width * 0.12,
+                        ),
+                        SizedBox(width: Get.width * 0.40),
+                        Stack(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Image.asset(
-                                  'assets/png/applogo.png',
-                                  width: Get.width * 0.12,
+                            IconButton(
+                              onPressed: () {
+                                controller.markNotificationsAsSeen();
+                                Get.toNamed(Routes.notificationsPage);
+                              },
+                              icon: Icon(
+                                Icons.notifications_none_outlined,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Positioned(
+                              right: 8,
+                              top: 8,
+                              child: Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                SizedBox(width: Get.width * 0.50),
-                                Stack(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        Get.toNamed(Routes.notificationsPage);
-                                      },
-                                      icon: Icon(
-                                        Icons.notifications_none_outlined,
-                                        color: Colors.white,
-                                      ),
+                                constraints: BoxConstraints(
+                                  minWidth: 16,
+                                  minHeight: 16,
+                                ),
+                                child: Obx(() {
+                                  return Text(
+                                    '${controller.unseenNotificationCount.value}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
                                     ),
-                                    Positioned(
-                                      right: 8,
-                                      top: 8,
-                                      child: Container(
-                                        padding: EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        constraints: BoxConstraints(
-                                          minWidth: 16,
-                                          minHeight: 16,
-                                        ),
-                                        child: Obx(() {
-                                          int unseenCount = controller.notifications
-                                              .where((notification) => notification.status == '0')
-                                              .length;
-                                          return Text(
-                                            '$unseenCount',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                            ),
-                                            textAlign: TextAlign.center,
+                                    textAlign: TextAlign.center,
                                   );
                                 }),
                               ),
                             ),
                           ],
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Get.toNamed(Routes.productListView);
+                          },
+                          icon: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          ),
                         ),
                         IconButton(
                           onPressed: () {
@@ -127,7 +131,8 @@ class AcListingView extends GetView<AcListingController> {
                           return Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -236,7 +241,8 @@ class AcListingView extends GetView<AcListingController> {
                                   ),
                                   SizedBox(width: Get.width * 0.02),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Mobile",
@@ -283,7 +289,7 @@ class AcListingView extends GetView<AcListingController> {
                             });
                             return Center(
                               child: Padding(
-                                padding:  EdgeInsets.only(top:  Get.height * 0.3),
+                                padding: EdgeInsets.only(top: Get.height * 0.3),
                                 child: RoundedLoader(),
                               ),
                             );
@@ -301,12 +307,13 @@ class AcListingView extends GetView<AcListingController> {
                                 return InkWell(
                                   onTap: () {
                                     Get.toNamed(Routes.detailPage,
-                                        arguments: amcDetail.amcId,preventDuplicates: true);
-                                  //  Get.toNamed(Routes.detailPage, arguments: amcDetail.amcId);
+                                        arguments: amcDetail.amcId,
+                                        preventDuplicates: true);
+                                    //  Get.toNamed(Routes.detailPage, arguments: amcDetail.amcId);
                                   },
-
                                   child: Container(
-                                      margin: EdgeInsets.symmetric(vertical: 10),
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 10),
                                       width: double.infinity,
                                       height: Get.height * 0.380,
                                       decoration: BoxDecoration(
@@ -328,24 +335,30 @@ class AcListingView extends GetView<AcListingController> {
                                               children: [
                                                 Text(
                                                   "AMC ID : ",
-                                                  style: MyTheme.regularTextStyle(
+                                                  style:
+                                                      MyTheme.regularTextStyle(
                                                     fontWeight: FontWeight.w700,
-                                                    fontSize: Get.height * 0.019,
+                                                    fontSize:
+                                                        Get.height * 0.019,
                                                   ),
                                                 ),
                                                 Text(
-                                                  amcDetail.code != null && amcDetail.code!.isNotEmpty
+                                                  amcDetail.code != null &&
+                                                          amcDetail
+                                                              .code!.isNotEmpty
                                                       ? amcDetail.code!
                                                       : '-----',
-                                                  style: MyTheme.regularTextStyle(
+                                                  style:
+                                                      MyTheme.regularTextStyle(
                                                     fontWeight: FontWeight.w700,
-                                                    fontSize: Get.height * 0.019,
+                                                    fontSize:
+                                                        Get.height * 0.019,
                                                   ),
                                                 ),
-
                                               ],
                                             ),
-                                            SizedBox(height: Get.height * 0.023),
+                                            SizedBox(
+                                                height: Get.height * 0.023),
                                             Row(
                                               children: [
                                                 Container(
@@ -361,12 +374,15 @@ class AcListingView extends GetView<AcListingController> {
                                                             34, 61, 192, 1),
                                                         // End color
                                                       ],
-                                                      begin: Alignment.centerLeft,
-                                                      end: Alignment.centerRight,
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(width: Get.width * 0.02),
+                                                SizedBox(
+                                                    width: Get.width * 0.02),
                                                 Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -387,15 +403,20 @@ class AcListingView extends GetView<AcListingController> {
                                                     Container(
                                                       width: Get.width * 0.4,
                                                       child: Text(
-                                                        amcDetail.packageName != null && amcDetail.packageName!.isNotEmpty
-                                                            ? amcDetail.packageName!
+                                                        amcDetail.packageName !=
+                                                                    null &&
+                                                                amcDetail
+                                                                    .packageName!
+                                                                    .isNotEmpty
+                                                            ? amcDetail
+                                                                .packageName!
                                                             : '-----',
                                                         style: MyTheme
                                                             .regularTextStyle(
                                                           fontWeight:
                                                               FontWeight.w700,
-                                                          fontSize:
-                                                              Get.height * 0.018,
+                                                          fontSize: Get.height *
+                                                              0.018,
                                                         ),
                                                       ),
                                                     ),
@@ -419,12 +440,15 @@ class AcListingView extends GetView<AcListingController> {
                                                             34, 61, 192, 1),
                                                         // End color
                                                       ],
-                                                      begin: Alignment.centerLeft,
-                                                      end: Alignment.centerRight,
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(width: Get.width * 0.02),
+                                                SizedBox(
+                                                    width: Get.width * 0.02),
                                                 Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -445,15 +469,21 @@ class AcListingView extends GetView<AcListingController> {
                                                     Container(
                                                       width: Get.width * 0.4,
                                                       child: Text(
-                                                        amcDetail.productCount != null && amcDetail.productCount! > 0
-                                                            ? amcDetail.productCount!.toString()
+                                                        amcDetail.productCount !=
+                                                                    null &&
+                                                                amcDetail
+                                                                        .productCount! >
+                                                                    0
+                                                            ? amcDetail
+                                                                .productCount!
+                                                                .toString()
                                                             : '------',
                                                         style: MyTheme
                                                             .regularTextStyle(
                                                           fontWeight:
                                                               FontWeight.w700,
-                                                          fontSize:
-                                                              Get.height * 0.018,
+                                                          fontSize: Get.height *
+                                                              0.018,
                                                         ),
                                                       ),
                                                     ),
@@ -464,7 +494,8 @@ class AcListingView extends GetView<AcListingController> {
                                             SizedBox(height: Get.height * 0.03),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Row(
                                                   children: [
@@ -472,7 +503,8 @@ class AcListingView extends GetView<AcListingController> {
                                                       width: Get.width * 0.014,
                                                       height: Get.height * 0.05,
                                                       decoration: BoxDecoration(
-                                                        gradient: LinearGradient(
+                                                        gradient:
+                                                            LinearGradient(
                                                           colors: [
                                                             Color.fromRGBO(
                                                                 66, 94, 236, 1),
@@ -489,7 +521,8 @@ class AcListingView extends GetView<AcListingController> {
                                                       ),
                                                     ),
                                                     SizedBox(
-                                                        width: Get.width * 0.02),
+                                                        width:
+                                                            Get.width * 0.02),
                                                     Column(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
@@ -501,25 +534,30 @@ class AcListingView extends GetView<AcListingController> {
                                                               .regularTextStyle(
                                                             fontWeight:
                                                                 FontWeight.w400,
-                                                            fontSize: Get.height *
-                                                                0.018,
+                                                            fontSize:
+                                                                Get.height *
+                                                                    0.018,
                                                           ),
                                                         ),
                                                         SizedBox(
                                                             height: Get.height *
                                                                 0.001),
                                                         Text(
-                                                         // ' ${_formatDate(amcDetail.startDate) ?? ''}',
-                                                          amcDetail.startDate != null
-                                                              ? _formatDate(amcDetail.startDate!)
+                                                          // ' ${_formatDate(amcDetail.startDate) ?? ''}',
+                                                          amcDetail.startDate !=
+                                                                  null
+                                                              ? _formatDate(
+                                                                  amcDetail
+                                                                      .startDate!)
                                                               : '-----',
 
                                                           style: MyTheme
                                                               .regularTextStyle(
                                                             fontWeight:
                                                                 FontWeight.w700,
-                                                            fontSize: Get.height *
-                                                                0.018,
+                                                            fontSize:
+                                                                Get.height *
+                                                                    0.018,
                                                           ),
                                                         ),
                                                       ],
@@ -532,7 +570,8 @@ class AcListingView extends GetView<AcListingController> {
                                                       width: Get.width * 0.014,
                                                       height: Get.height * 0.05,
                                                       decoration: BoxDecoration(
-                                                        gradient: LinearGradient(
+                                                        gradient:
+                                                            LinearGradient(
                                                           colors: [
                                                             Color.fromRGBO(
                                                                 66, 94, 236, 1),
@@ -549,7 +588,8 @@ class AcListingView extends GetView<AcListingController> {
                                                       ),
                                                     ),
                                                     SizedBox(
-                                                        width: Get.width * 0.02),
+                                                        width:
+                                                            Get.width * 0.02),
                                                     Column(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
@@ -561,24 +601,28 @@ class AcListingView extends GetView<AcListingController> {
                                                               .regularTextStyle(
                                                             fontWeight:
                                                                 FontWeight.w400,
-                                                            fontSize: Get.height *
-                                                                0.018,
+                                                            fontSize:
+                                                                Get.height *
+                                                                    0.018,
                                                           ),
                                                         ),
                                                         SizedBox(
                                                             height: Get.height *
                                                                 0.001),
                                                         Text(
-                                                          amcDetail.endDate != null
-                                                              ? _formatDate(amcDetail.endDate!)
+                                                          amcDetail.endDate !=
+                                                                  null
+                                                              ? _formatDate(
+                                                                  amcDetail
+                                                                      .endDate!)
                                                               : '-----',
-
                                                           style: MyTheme
                                                               .regularTextStyle(
                                                             fontWeight:
                                                                 FontWeight.w700,
-                                                            fontSize: Get.height *
-                                                                0.018,
+                                                            fontSize:
+                                                                Get.height *
+                                                                    0.018,
                                                           ),
                                                         ),
                                                       ],
@@ -587,7 +631,8 @@ class AcListingView extends GetView<AcListingController> {
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(height: Get.height * 0.019),
+                                            SizedBox(
+                                                height: Get.height * 0.019),
                                             Text(
                                               "If you have any specific service request\nplease add here",
                                               style: MyTheme.regularTextStyle(
@@ -623,6 +668,236 @@ class AcListingView extends GetView<AcListingController> {
                             ),
                           ),
                         ),
+                        Obx(() {
+                          return controller.isContainerVisible.value
+                              ? Positioned(
+                                  bottom: 5,
+                                  left: 10,
+                                  right: 10,
+                                  child: Center(
+                                    child: Container(
+                                      height: Get.height * 0.3,
+                                      width: Get.width * 0.9,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromRGBO(66, 94, 236, 0.5)
+                                            .withOpacity(0.75),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Stack(
+                                        children: [
+                                          Positioned(
+                                            top: 10,
+                                            right: 10,
+                                            child: IconButton(
+                                              onPressed: () {
+                                                controller.isContainerVisible
+                                                    .value = false;
+                                              },
+                                              icon: Icon(Icons.close,
+                                                  color: Colors.white,
+                                                  size: 20),
+                                            ),
+                                          ),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Obx(() {
+                                                bool isLoading =
+                                                    controller.isLoading.value;
+                                                final products =
+                                                    controller.productList;
+                                                if (isLoading) {
+                                                  Future.delayed(
+                                                      Duration(seconds: 2), () {
+                                                    controller.isLoading.value =
+                                                        false;
+                                                  });
+                                                  return Center(
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top:
+                                                              Get.height * 0.3),
+                                                      child: RoundedLoader(),
+                                                    ),
+                                                  );
+                                                } else if (products.isEmpty) {
+                                                  return Center(
+                                                    child: MAResultEmpty(
+                                                      msg: 'Results Empty',
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return Expanded(
+                                                      child: ListView.builder(
+                                                          itemCount:
+                                                              products.length,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            final product =
+                                                                products[index];
+                                                            return Container(
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            10),
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              17),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      width: 1),
+                                                                ),
+                                                                child: Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        top:
+                                                                            15.0,
+                                                                        left:
+                                                                            0),
+                                                                    child: Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                Get.width * 0.9,
+                                                                            // Width of the container
+                                                                            height:
+                                                                                Get.height * 0.17,
+                                                                            // Height of the container
+                                                                            child: product.images != null && product.images!.isNotEmpty
+                                                                                ? ListView.builder(
+                                                                                    scrollDirection: Axis.vertical,
+                                                                                    itemCount: product.images!.length,
+                                                                                    itemBuilder: (BuildContext context, int imageIndex) {
+                                                                                      return Container(
+                                                                                        width: Get.width * 0.9,
+                                                                                        height: Get.height * 0.17,
+                                                                                        margin: EdgeInsets.only(right: 8.0),
+                                                                                        decoration: BoxDecoration(
+                                                                                          image: DecorationImage(
+                                                                                            image: NetworkImage(
+                                                                                              '${product.imagesPath}/${product.images![imageIndex]}',
+                                                                                            ),
+                                                                                            fit: BoxFit.cover,
+                                                                                          ),
+                                                                                          borderRadius: BorderRadius.circular(12),
+                                                                                        ),
+                                                                                      );
+                                                                                    },
+                                                                                  )
+                                                                                : Container(
+                                                                                    width: Get.width * 0.9,
+                                                                                    height: Get.height * 0.17,
+                                                                                    decoration: BoxDecoration(
+                                                                                      image: DecorationImage(
+                                                                                        image: AssetImage('assets/png/ac.png'),
+                                                                                        fit: BoxFit.cover,
+                                                                                      ),
+                                                                                      borderRadius: BorderRadius.circular(12),
+                                                                                    ),
+                                                                                  ),
+                                                                          ),
+                                                                        ])
+                                                                )
+                                                            );
+                                                          }));
+                                                }
+                                              }),
+                                              Text(
+                                                "Exclusive Offer",
+                                                style: MyTheme.regularTextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: Get.height * 0.033,
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Now @ ",
+                                                    style: MyTheme
+                                                        .regularTextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize:
+                                                          Get.height * 0.026,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      width: Get.width * 0.02),
+                                                  Text(
+                                                    "35,000",
+                                                    style: MyTheme
+                                                        .regularTextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize:
+                                                          Get.height * 0.026,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              BuyNowButton(
+                                                buttonPress: () async {
+                                                  Get.toNamed(
+                                                      Routes.productListView);
+                                                },
+                                                isEnabled: true,
+                                                padding: const EdgeInsets.only(
+                                                    top: 10),
+                                                height: Get.height * 0.055,
+                                                width: Get.width * 0.35,
+                                                clipBehavior: 0,
+                                                radius: 30,
+                                                fontSize: 16,
+                                                text: 'Buy Now',
+                                              ),
+                                              SizedBox(
+                                                  height: Get.height * 0.015),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 5,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                  ),
+                                                  SizedBox(
+                                                      width: Get.width * 0.01),
+                                                  CircleAvatar(
+                                                    radius: 5,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                  ),
+                                                  SizedBox(
+                                                      width: Get.width * 0.01),
+                                                  CircleAvatar(
+                                                    radius: 5,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(); // Return an empty container when not visible
+                        })
                       ]),
                     ),
                   ],
@@ -633,8 +908,6 @@ class AcListingView extends GetView<AcListingController> {
         ])));
   }
 }
-
-
 
 // class AcListingView extends StatelessWidget {
 //   final AcListingController acListingController =

@@ -23,13 +23,13 @@ abstract class NotificationServices {
         ? ApiResp(
       ok: true,
       rdata: resp,
-      msgs: [ApiMsg(msg: "", msgType: "", title: "Success")],
+      msgs: [],
       message: '',
     )
         : ApiResp(
       ok: false,
       rdata: resp,
-      msgs: [ApiMsg(msg: "Server response failed", msgType: "0", title: "Failed")],
+      msgs: [],
       message: '',
     );
   }

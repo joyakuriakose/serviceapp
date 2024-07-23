@@ -12,6 +12,7 @@ import '../../utils/my_theme.dart';
 import '../../utils/my_utils.dart';
 import '../../utils/routes.dart';
 import 'detail_page_controller.dart';
+
 class DetailView extends GetView<DetailPageController> {
   const DetailView({Key? key}) : super(key: key);
 
@@ -22,54 +23,63 @@ class DetailView extends GetView<DetailPageController> {
           MyUtils.hideKeyboard();
         },
         child: Scaffold(
-            body: AppRefresh(
-              refreshFunction: () =>
-                  controller.refresh(),
-              child: Background(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 17.0, right: 17),
-                    child: AppRefresh(
-                      refreshFunction: () =>
-                          controller.refresh(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: Image.asset(
-                                  'assets/png/applogo.png',
-                                  width: Get.width * 0.12,
-                                ),
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.notifications_none_outlined,
-                                    color: Colors.white,
-                                  ))
-                            ],
+            body: Background(
+                child: Padding(
+              padding: EdgeInsets.only(left: 17.0, right: 17),
+              child: AppRefresh(
+                refreshFunction: () => controller.refresh(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Image.asset(
+                            'assets/png/applogo.png',
+                            width: Get.width * 0.12,
                           ),
-                          SizedBox(height: Get.height * 0.02),
+                        ),
+                        // IconButton(
+                        //     onPressed: () {},
+                        //     icon: Icon(
+                        //       Icons.notifications_none_outlined,
+                        //       color: Colors.white,
+                        //     ))
+                      ],
+                    ),
+                    SizedBox(height: Get.height * 0.02),
+                    Obx(() => controller.isScreenProgress.value
+                        ? Container()
+                        : Container(
+                      width: Get.width * 0.4,
+                      child: Text(
+                        controller.amcdetails
+                            .value.amcCode
+                            .toString() ??
+                            "",
+                        style: MyTheme.regularTextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: Get.height * 0.018,
+                        ),
+                      ),
+                    )),
+                    SizedBox(height: Get.height * 0.01),
 
-                          Expanded(
-                            child: Obx(
-                                  () => controller.isScreenProgress.value
-                                  ? Center(child: RoundedLoader())
-                                  : SingleChildScrollView(
-                                child: BuildCardWidget(controller: controller),
-                              ),
-                            ),
-                          ),
-                        ],
+                    Expanded(
+                      child: Obx(
+                        () => controller.isScreenProgress.value
+                            ? Center(child: RoundedLoader())
+                            : BuildCardWidget(controller: controller),
                       ),
                     ),
-                  )),
-            )));
+                  ],
+                ),
+              ),
+            ))));
   }
 }
 
@@ -80,7 +90,6 @@ class BuildCardWidget extends StatelessWidget {
 
   String _formatDate(DateTime? dateTime) {
     if (dateTime != null) {
-
       return "${dateTime.year}-${dateTime.month}-${dateTime.day}";
     } else {
       return "--------"; // Display a message for null values
@@ -89,20 +98,10 @@ class BuildCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: AppRefresh(
-        refreshFunction: () =>
-            controller.refresh(),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            controller.amcdetails.value.amcCode.toString() ?? "",
-            style: MyTheme.regularTextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: Get.height * 0.027,
-            ),
-          ),
-          SizedBox(height: Get.height * 0.01),
-          Container(
+    return ListView.builder(
+        itemCount: 1,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
             margin: EdgeInsets.symmetric(vertical: 10),
             width: double.infinity,
             //height: Get.height * 0.780,
@@ -112,21 +111,69 @@ class BuildCardWidget extends StatelessWidget {
             ),
             child: Padding(
               padding: EdgeInsets.only(top: 15.0, left: 0),
-              child: SingleChildScrollView(
-                child: AppRefresh(
-                  refreshFunction: () =>
-                      controller.refresh(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        'assets/png/ac.png',
-                        //width: Get.width * 0.10
-                      ),
-                      SizedBox(height: Get.height * 0.010),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0),
-                        child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets/png/ac.png',
+                    //width: Get.width * 0.10
+                  ),
+                  SizedBox(height: Get.height * 0.010),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: Get.width * 0.014,
+                          height: Get.height * 0.05,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(66, 94, 236, 1),
+                                // Start color
+                                Color.fromRGBO(34, 61, 192, 1),
+                                // End color
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: Get.width * 0.02),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "AMC Package Name",
+                              style: MyTheme.regularTextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: Get.height * 0.018,
+                              ),
+                            ),
+                            SizedBox(height: Get.height * 0.001),
+                            Container(
+                              width: Get.width * 0.4,
+                              child: Text(
+                                controller.amcdetails.value.packageName ??
+                                    "",
+                                style: MyTheme.regularTextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: Get.height * 0.018,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.017),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
                             Container(
                               width: Get.width * 0.014,
@@ -149,762 +196,835 @@ class BuildCardWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "AMC Package Name",
+                                  "Brand Name",
                                   style: MyTheme.regularTextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: Get.height * 0.018,
                                   ),
                                 ),
                                 SizedBox(height: Get.height * 0.001),
-                                Container(
-                                  width: Get.width * 0.4,
-                                  child: Text(
-                                    controller.amcdetails.value.packageName ?? "",
+                                Text(
+                                  controller.amcdetails.value.brandName ??
+                                      "",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.05,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Model Name",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
+                                  ),
+                                ),
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  controller.amcdetails.value.modelName ??
+                                      "------",
+                                  style: MyTheme.regularTextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: Get.height * 0.018,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.017),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: Get.width * 0.014,
+                          height: Get.height * 0.05,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(66, 94, 236, 1),
+                                // Start color
+                                Color.fromRGBO(34, 61, 192, 1),
+                                // End color
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: Get.width * 0.02),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "AMC",
+                              style: MyTheme.regularTextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: Get.height * 0.018,
+                              ),
+                            ),
+                            SizedBox(height: Get.height * 0.001),
+                            Container(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    getStatusText(controller
+                                        .amcdetails.value.amcStatus
+                                        .toString()),
                                     style: MyTheme.regularTextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: Get.height * 0.018,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: Get.height * 0.017),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.05,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                  SizedBox(
+                                    width: Get.width * 0.04,
                                   ),
-                                ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Brand Name",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      controller.amcdetails.value.brandName ?? "",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.05,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Model Name",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      controller.amcdetails.value.modelName ??
-                                          "------",
-                                      style: MyTheme.regularTextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: Get.height * 0.018,
-                                          color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: Get.height * 0.017),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: Get.width * 0.014,
-                              height: Get.height * 0.05,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color.fromRGBO(66, 94, 236, 1),
-                                    // Start color
-                                    Color.fromRGBO(34, 61, 192, 1),
-                                    // End color
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: Get.width * 0.02),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "AMC",
-                                  style: MyTheme.regularTextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: Get.height * 0.018,
-                                  ),
-                                ),
-                                SizedBox(height: Get.height * 0.001),
-                                Container(
-                                  child: Row(
+                                  Row(
                                     children: [
                                       Text(
-                                        getStatusText(
-                                            controller.amcdetails.value.amcStatus.toString()),
+                                        controller.amcdetails.value
+                                                .remainingCount
+                                                .toString() ??
+                                            "",
                                         style: MyTheme.regularTextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: Get.height * 0.018,
-                                        ),
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: Get.height * 0.018,
+                                            color: Colors.indigo),
                                       ),
-                                      SizedBox(
-                                        width: Get.width * 0.04,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            controller.amcdetails.value.remainingCount
-                                                    .toString() ??
-                                                "",
-                                            style: MyTheme.regularTextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: Get.height * 0.018,
-                                                color: Colors.indigo),
-                                          ),
-                                          Text(
-                                            " Out of 3 Free Services",
-                                            style: MyTheme.regularTextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: Get.height * 0.018,
-                                                color: Colors.indigo),
-                                          ),
-                                        ],
+                                      Text(
+                                        " Out of 3 Free Services",
+                                        style: MyTheme.regularTextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: Get.height * 0.018,
+                                            color: Colors.indigo),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: Get.height * 0.017),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.017),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Row(
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.06,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.06,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "Status of First AMC",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Status of First AMC",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      getStatusText(controller.amcdetails.value.serviceDates![0].status.toString()),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-
-                                    SizedBox(height: Get.height * 0.001),
-                                    if (controller.amcdetails.value.serviceDates![0].status == "3")
-                                      Row(
-                                        children: [
-                                          controller.amcdetails.value.serviceDates![0].feedbackStatus == 1
-                                              ? Text(
-                                            "Thank you for your feedback",
-                                            style: MyTheme.regularTextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Get.height * 0.018,
-                                              color: Colors.indigo,
-                                            ),
-                                          )
-                                              : InkWell(
-                                            onTap: () {
-                                              Get.toNamed(Routes.feedback, arguments: {
-                                                'amcId': controller.amcId ?? 0,
-                                                'serviceId': controller
-                                                    .amcdetails.value.serviceDates![0].serviceId ??
-                                                    0,
-                                              });
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Write Your Feedback",
-                                                  style: MyTheme.regularTextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: Get.height * 0.018,
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  getStatusText(controller.amcdetails.value
+                                      .serviceDates![0].status
+                                      .toString()),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
+                                ),
+                                SizedBox(height: Get.height * 0.001),
+                                if (controller.amcdetails.value
+                                        .serviceDates![0].status ==
+                                    "3")
+                                  Row(
+                                    children: [
+                                      controller
+                                                  .amcdetails
+                                                  .value
+                                                  .serviceDates![0]
+                                                  .feedbackStatus ==
+                                              1
+                                          ? Text(
+                                              "Thank you for your feedback",
+                                              style:
+                                                  MyTheme.regularTextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize:
+                                                    Get.height * 0.018,
+                                                color: Colors.indigo,
+                                              ),
+                                            )
+                                          : InkWell(
+                                              onTap: () {
+                                                Get.toNamed(Routes.feedback,
+                                                    arguments: {
+                                                      'amcId': controller
+                                                              .amcId ??
+                                                          0,
+                                                      'serviceId': controller
+                                                              .amcdetails
+                                                              .value
+                                                              .serviceDates![
+                                                                  0]
+                                                              .serviceId ??
+                                                          0,
+                                                    });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Write Your Feedback",
+                                                    style: MyTheme
+                                                        .regularTextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: Get.height *
+                                                          0.018,
+                                                      color: Colors.indigo,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      width:
+                                                          Get.width * 0.02),
+                                                  Icon(
+                                                    Icons.edit,
                                                     color: Colors.indigo,
                                                   ),
-                                                ),
-                                                SizedBox(width: Get.width * 0.02),
-                                                Icon(
-                                                  Icons.edit,
-                                                  color: Colors.indigo,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
                               ],
                             ),
-                            Row(
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.06,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.06,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "Date",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Date",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      _formatDate(controller
-                                          .amcdetails.value.serviceDates![0].date),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                  ],
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  _formatDate(controller.amcdetails.value
+                                      .serviceDates![0].date),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: Get.height * 0.015),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0, right: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.015),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0, right: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Row(
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.06,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.06,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "Status of Second AMC",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Status of Second AMC",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      getStatusText(controller
-                                          .amcdetails.value.serviceDates![1].status.toString()),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    if (controller.amcdetails.value.serviceDates![1]
-                                            .status ==
-                                        "3")
-                                      Row(
-                                        children: [
-                                          controller.amcdetails.value.serviceDates![1].feedbackStatus == 1
-                                              ? Text(
-                                            "Thank you for your feedback",
-                                            style: MyTheme.regularTextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Get.height * 0.018,
-                                              color: Colors.indigo,
-                                            ),
-                                          )
-                                              :
-                                          InkWell(
-                                            onTap: () {
-                                              Get.toNamed(Routes.feedback,
-                                                  arguments: {
-                                                    'amcId': controller.amcId ?? 0,
-                                                    // Provide a default value if amcId might be null
-                                                    'serviceId': controller
-                                                            .amcdetails
-                                                            .value
-                                                            .serviceDates![1]
-                                                            .serviceId ??
-                                                        0,
-                                                  });
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Write Your Feedback",
-                                                  style: MyTheme.regularTextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: Get.height * 0.018,
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  getStatusText(controller.amcdetails.value
+                                      .serviceDates![1].status
+                                      .toString()),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
+                                ),
+                                SizedBox(height: Get.height * 0.001),
+                                if (controller.amcdetails.value
+                                        .serviceDates![1].status ==
+                                    "3")
+                                  Row(
+                                    children: [
+                                      controller
+                                                  .amcdetails
+                                                  .value
+                                                  .serviceDates![1]
+                                                  .feedbackStatus ==
+                                              1
+                                          ? Text(
+                                              "Thank you for your feedback",
+                                              style:
+                                                  MyTheme.regularTextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize:
+                                                    Get.height * 0.018,
+                                                color: Colors.indigo,
+                                              ),
+                                            )
+                                          : InkWell(
+                                              onTap: () {
+                                                Get.toNamed(Routes.feedback,
+                                                    arguments: {
+                                                      'amcId': controller
+                                                              .amcId ??
+                                                          0,
+                                                      // Provide a default value if amcId might be null
+                                                      'serviceId': controller
+                                                              .amcdetails
+                                                              .value
+                                                              .serviceDates![
+                                                                  1]
+                                                              .serviceId ??
+                                                          0,
+                                                    });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Write Your Feedback",
+                                                    style: MyTheme
+                                                        .regularTextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: Get.height *
+                                                          0.018,
+                                                      color: Colors.indigo,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      width:
+                                                          Get.width * 0.02),
+                                                  Icon(
+                                                    Icons.edit,
                                                     color: Colors.indigo,
                                                   ),
-                                                ),
-                                                SizedBox(width: Get.width * 0.02),
-                                                Icon(
-                                                  Icons.edit,
-                                                  color: Colors.indigo,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
                               ],
                             ),
-                            SizedBox(width: Get.width * 0.03 ),
-                            Row(
+                          ],
+                        ),
+                        SizedBox(width: Get.width * 0.03),
+                        Row(
+                          children: [
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.06,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.06,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "Date",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Date",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      _formatDate(controller
-                                          .amcdetails.value.serviceDates![1].date),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                  ],
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  _formatDate(controller.amcdetails.value
+                                      .serviceDates![1].date),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: Get.height * 0.015),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.015),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Row(
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.06,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.06,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "Status of Third AMC",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Status of Third AMC",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      getStatusText(controller
-                                          .amcdetails.value.serviceDates![2].status.toString()),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    if (controller.amcdetails.value.serviceDates![2]
-                                            .status ==
-                                        "3")
-                                      Row(
-                                        children: [
-                                          controller.amcdetails.value.serviceDates![2].feedbackStatus == 1
-                                              ? Text(
-                                            "Thank you for your feedback",
-                                            style: MyTheme.regularTextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Get.height * 0.018,
-                                              color: Colors.indigo,
-                                            ),
-                                          )
-                                              :
-                                          InkWell(
-                                            onTap: () {
-                                              Get.toNamed(Routes.feedback,
-                                                  arguments: {
-                                                    'amcId': controller.amcId ?? 0,
-                                                    // Provide a default value if amcId might be null
-                                                    'serviceId': controller
-                                                            .amcdetails
-                                                            .value
-                                                            .serviceDates![2]
-                                                            .serviceId ??
-                                                        0,
-                                                  });
-                                            },
-                                            child:  Row(
-                                              children: [
-                                                Text(
-                                                  "Write Your Feedback",
-                                                  style: MyTheme.regularTextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: Get.height * 0.018,
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  getStatusText(controller.amcdetails.value
+                                      .serviceDates![2].status
+                                      .toString()),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
+                                ),
+                                SizedBox(height: Get.height * 0.001),
+                                if (controller.amcdetails.value
+                                        .serviceDates![2].status ==
+                                    "3")
+                                  Row(
+                                    children: [
+                                      controller
+                                                  .amcdetails
+                                                  .value
+                                                  .serviceDates![2]
+                                                  .feedbackStatus ==
+                                              1
+                                          ? Text(
+                                              "Thank you for your feedback",
+                                              style:
+                                                  MyTheme.regularTextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize:
+                                                    Get.height * 0.018,
+                                                color: Colors.indigo,
+                                              ),
+                                            )
+                                          : InkWell(
+                                              onTap: () {
+                                                Get.toNamed(Routes.feedback,
+                                                    arguments: {
+                                                      'amcId': controller
+                                                              .amcId ??
+                                                          0,
+                                                      // Provide a default value if amcId might be null
+                                                      'serviceId': controller
+                                                              .amcdetails
+                                                              .value
+                                                              .serviceDates![
+                                                                  2]
+                                                              .serviceId ??
+                                                          0,
+                                                    });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Write Your Feedback",
+                                                    style: MyTheme
+                                                        .regularTextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: Get.height *
+                                                          0.018,
+                                                      color: Colors.indigo,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      width:
+                                                          Get.width * 0.02),
+                                                  Icon(
+                                                    Icons.edit,
                                                     color: Colors.indigo,
                                                   ),
-                                                ),
-                                                SizedBox(width: Get.width * 0.02),
-                                                Icon(
-                                                  Icons.edit,
-                                                  color: Colors.indigo,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
                               ],
                             ),
-                            Row(
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.06,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.06,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "Date",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Date",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      _formatDate(controller
-                                          .amcdetails.value.serviceDates![2].date),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                  ],
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  _formatDate(controller.amcdetails.value
+                                      .serviceDates![2].date),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: Get.height * 0.015),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.015),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            Row(
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.06,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.06,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "Paid AMC Status",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Paid AMC Status",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      getStatusText(controller
-                                          .amcdetails.value.serviceDates![3].status.toString()),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    if (controller.amcdetails.value.serviceDates![3]
-                                            .status ==
-                                        "3")
-                                      Row(
-                                        children: [
-                                          controller.amcdetails.value.serviceDates![3].feedbackStatus == 1
-                                              ? Text(
-                                            "Thank you for your feedback",
-                                            style: MyTheme.regularTextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Get.height * 0.018,
-                                              color: Colors.indigo,
-                                            ),
-                                          )
-                                              :
-                                          InkWell(
-                                            onTap: () {
-                                              Get.toNamed(Routes.feedback,
-                                                  arguments: {
-                                                    'amcId': controller.amcId ?? 0,
-                                                    // Provide a default value if amcId might be null
-                                                    'serviceId': controller
-                                                            .amcdetails
-                                                            .value
-                                                            .serviceDates![3]
-                                                            .serviceId ??
-                                                        0,
-                                                  });
-                                            },
-                                            child:  Row(
-                                              children: [
-                                                Text(
-                                                  "Write Your Feedback",
-                                                  style: MyTheme.regularTextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: Get.height * 0.018,
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  getStatusText(controller.amcdetails.value
+                                      .serviceDates![3].status
+                                      .toString()),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
+                                ),
+                                SizedBox(height: Get.height * 0.001),
+                                if (controller.amcdetails.value
+                                        .serviceDates![3].status ==
+                                    "3")
+                                  Row(
+                                    children: [
+                                      controller
+                                                  .amcdetails
+                                                  .value
+                                                  .serviceDates![3]
+                                                  .feedbackStatus ==
+                                              1
+                                          ? Text(
+                                              "Thank you for your feedback",
+                                              style:
+                                                  MyTheme.regularTextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize:
+                                                    Get.height * 0.018,
+                                                color: Colors.indigo,
+                                              ),
+                                            )
+                                          : InkWell(
+                                              onTap: () {
+                                                Get.toNamed(Routes.feedback,
+                                                    arguments: {
+                                                      'amcId': controller
+                                                              .amcId ??
+                                                          0,
+                                                      // Provide a default value if amcId might be null
+                                                      'serviceId': controller
+                                                              .amcdetails
+                                                              .value
+                                                              .serviceDates![
+                                                                  3]
+                                                              .serviceId ??
+                                                          0,
+                                                    });
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Write Your Feedback",
+                                                    style: MyTheme
+                                                        .regularTextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: Get.height *
+                                                          0.018,
+                                                      color: Colors.indigo,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      width:
+                                                          Get.width * 0.02),
+                                                  Icon(
+                                                    Icons.edit,
                                                     color: Colors.indigo,
                                                   ),
-                                                ),
-                                                SizedBox(width: Get.width * 0.02),
-                                                Icon(
-                                                  Icons.edit,
-                                                  color: Colors.indigo,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
                               ],
                             ),
-                            Row(
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.06,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.06,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "Date",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Date",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      _formatDate(controller
-                                          .amcdetails.value.serviceDates![3].date),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                  ],
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  _formatDate(controller.amcdetails.value
+                                      .serviceDates![3].date),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: Get.height * 0.015),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0),
-                        child: Row(
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.015),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: Get.width * 0.014,
+                          height: Get.height * 0.05,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(66, 94, 236, 1),
+                                // Start color
+                                Color.fromRGBO(34, 61, 192, 1),
+                                // End color
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: Get.width * 0.02),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "No. of AC's Covered Under Package   ",
+                              style: MyTheme.regularTextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: Get.height * 0.018,
+                              ),
+                            ),
+                            SizedBox(height: Get.height * 0.001),
+                            Container(
+                              width: Get.width * 0.4,
+                              child: Text(
+                                controller.amcdetails.value.productCount
+                                        ?.toString() ??
+                                    "",
+                                style: MyTheme.regularTextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: Get.height * 0.018,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.017),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 20.0, right: 20.0, bottom: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
                             Container(
                               width: Get.width * 0.014,
@@ -927,133 +1047,77 @@ class BuildCardWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "No. of AC's Covered Under Package   ",
+                                  "AMC Start Date",
                                   style: MyTheme.regularTextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: Get.height * 0.018,
                                   ),
                                 ),
                                 SizedBox(height: Get.height * 0.001),
-                                Container(
-                                  width: Get.width * 0.4,
-                                  child: Text(
-                                    controller.amcdetails.value.productCount
-                                            ?.toString() ??
-                                        "",
-                                    style: MyTheme.regularTextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Get.height * 0.018,
-                                    ),
+                                Text(
+                                  _formatDate(
+                                      controller.amcdetails.value.amcStart),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(height: Get.height * 0.017),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.05,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "AMC Start Date",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      _formatDate(
-                                          controller.amcdetails.value.amcStart),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.05,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1),
+                                    // Start color
+                                    Color.fromRGBO(34, 61, 192, 1),
+                                    // End color
                                   ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
                                 ),
-                              ],
+                              ),
                             ),
-                            Row(
+                            SizedBox(width: Get.width * 0.02),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.05,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1),
-                                        // Start color
-                                        Color.fromRGBO(34, 61, 192, 1),
-                                        // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
+                                Text(
+                                  "AMC End Date",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Get.height * 0.018,
                                   ),
                                 ),
-                                SizedBox(width: Get.width * 0.02),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "AMC End Date",
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-                                    SizedBox(height: Get.height * 0.001),
-                                    Text(
-                                      _formatDate(controller.amcdetails.value.amcEnd),
-                                      style: MyTheme.regularTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: Get.height * 0.018,
-                                      ),
-                                    ),
-
-                                  ],
+                                SizedBox(height: Get.height * 0.001),
+                                Text(
+                                  _formatDate(
+                                      controller.amcdetails.value.amcEnd),
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.018,
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
+          );
+        },
+      );
 
-          ),
-        ]),
-      ),
-    );
   }
 }
 
@@ -1062,7 +1126,7 @@ String getStatusText(String? status) {
     case "1":
       return "Open";
     case "2":
-      return "Ongoing";
+      return "Processing";
     case "3":
       return "Closed";
     case "4":

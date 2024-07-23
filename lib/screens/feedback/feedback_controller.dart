@@ -13,6 +13,7 @@ import '../../model/api_feedback_resp.dart';
 import '../../model/api_resp.dart';
 import '../../model/package_detail_model.dart';
 import '../../services/feedback_services.dart';
+
 import '../../services/package_detail_services.dart';
 import '../../utils/my_utils.dart';
 import '../../utils/routes.dart';
@@ -90,7 +91,7 @@ class FeedbackController extends GetxController {
       } else {
         Get.snackbar(
           "Failed",
-          resp.msgs?.first.msg ?? 'Unknown error',
+          resp.message ?? 'Unknown error',
           backgroundColor: Colors.red,
         );
       }

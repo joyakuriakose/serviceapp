@@ -5,4 +5,5 @@ abstract class ApiPaths {
   static const packageListing = 'https://seowebsites.in/service_management/api/v1/get-customer';
   static const packageDetails = 'https://seowebsites.in/service_management/api/v1/get-amc-details';
   static const serviceRequest = '/service-request';
+  static const productList = '/get-product-list';
 }

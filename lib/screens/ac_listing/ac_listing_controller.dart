@@ -11,27 +11,36 @@ import '../../app.dart';
 import '../../model/api_resp.dart';
 import '../../model/notification_model.dart';
 import '../../model/package_listing_model.dart';
+import '../../model/product_list_model.dart';
 import '../../services/notification_services.dart';
 import '../../services/package_listing_services.dart';
+import '../../services/product_list_services.dart';
 import '../../utils/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AcListingController extends GetxController {
   RxList<AmcDetail> amcdetail = <AmcDetail>[].obs;
   RxList<Customer> customer = <Customer>[].obs;
   RxBool isScreenProgress = false.obs;
   RxBool isLoading = true.obs;
-  RxList<Notificationss> notifications = <Notificationss>[].obs;
-
   final int id;
+  RxList<Notificationss> notifications = <Notificationss>[].obs;
+  RxInt unseenNotificationCount = 0.obs;
+  RxList<ProductList> productList = <ProductList>[].obs;
+  AcListingController(this.id, this.customer_id);
 
-  AcListingController(this.id);
+  final int customer_id;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchNotifications();
-    initialAcListt();
+
+  initialVehicleListt() async {
+    //Map body = customersListApiPayload;
+    ApiResp resp = await ProductListServices.fetchProductList(customer_id);
+    productList.value = ProductListModel.fromJson(resp.rdata).productList!;
+    App.productLists = productList.value;
+    //print(App.productLists.first.vehicleName);
+    return productList;
   }
+
 
   Future<void> fetchNotifications() async {
     try {
@@ -40,21 +49,36 @@ class AcListingController extends GetxController {
         var notificationModel = NotificationModel.fromJson(resp.rdata);
         notifications.value = notificationModel.notification;
 
-        // Print notifications for debug purposes
-        notifications.forEach((notification) {
-          print("Notification - ID: ${notification.id}, Description: ${notification.description}, Status: ${notification.status}");
-        });
+        // Get the previously seen notification count from SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        int seenCount = prefs.getInt('seenNotificationCount') ?? 0;
+
+        // Calculate the number of unseen notifications
+        int newUnseenCount = notifications
+            .where((notification) => notification.status == '0')
+            .length - seenCount;
+
+        unseenNotificationCount.value = newUnseenCount < 0 ? 0 : newUnseenCount;
       } else {
-        print("Error fetching notifications: ${resp?.msgs?.first.msg}");
+        print("Error fetching notifications: ${resp.message}");
       }
     } catch (e) {
       print("Error fetching notifications: $e");
-    } finally {
-      isLoading.value = false;
     }
   }
 
-  Future<void> initialAcListt() async {
+  Future<void> markNotificationsAsSeen() async {
+    notifications.forEach((notification) {
+      notification.status = '1'; // Mark all as seen
+    });
+    unseenNotificationCount.value = 0; // Reset the unseen count
+
+    // Save the count of seen notifications in SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('seenNotificationCount', notifications.length);
+  }
+  var isContainerVisible = true.obs;
+  initialAcListt() async {
     try {
       ApiResp? resp = await PackageListServices.fetchPackageList(id);
       if (resp != null && resp.ok == true) {
@@ -74,20 +98,24 @@ class AcListingController extends GetxController {
           print("No customers found.");
         }
       } else {
-        print("Error: ${resp?.msgs?.first.msg}");
+        print("Error: ${resp.message}");
       }
     } catch (e) {
       print("Error in initialVehicleListt: $e");
-    } finally {
-      isLoading.value = false;
     }
   }
 
   @override
   Future<void> refresh() async {
-    await fetchNotifications();
-    await initialAcListt();
+    await fetchNotifications(); // Refresh notifications when refreshing the screen
+    await initialAcListt(); // Also refresh your main data
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchNotifications();
+    initialAcListt();
+    initialVehicleListt();
   }
 }
-
-

@@ -5,12 +5,18 @@ import '../screens/ac_listing/ac_listing_binding.dart';
 import '../screens/ac_listing/ac_listing_view.dart';
 import '../screens/detail_page/detail_page_bindings.dart';
 import '../screens/detail_page/detail_page_view.dart';
+import '../screens/expenditure_history/expenditure_bindings.dart';
+import '../screens/expenditure_history/expenditure_view.dart';
 import '../screens/feedback/feedback_binding.dart';
 import '../screens/feedback/feedback_view.dart';
 import '../screens/login/login_bindings.dart';
 import '../screens/login/login_view.dart';
 import '../screens/notifications/notif_bindings.dart';
 import '../screens/notifications/notif_view.dart';
+import '../screens/product_listing/pro_listing_bindings.dart';
+import '../screens/product_listing/pro_listing_view.dart';
+import '../screens/service_history/service_bindings.dart';
+import '../screens/service_history/service_view.dart';
 import '../screens/service_request/request_binding.dart';
 import '../screens/service_request/request_view.dart';
 import '../screens/splash_screen.dart';
@@ -26,6 +32,9 @@ class Routes {
   static const notificationsPage = '/notification';
   static const feedback = '/feedback';
   static const service = '/service';
+  static const productListView = '/productlistview';
+  static const expenditureHistory = '/expenditurehistory';
+  static const serviceHistory = '/servicehistory';
 
   static final routes = [
     GetPage(
@@ -63,6 +72,21 @@ class Routes {
       binding: RequestBindings(1),
       name: service,
       page: () =>  RequestView(),
+    ),
+    GetPage(
+      binding: ProductListBindings(),
+      name: productListView,
+      page: () =>  ProductListView(),
+    ),
+    GetPage(
+      binding: ExpenditureBindings(),
+      name: expenditureHistory,
+      page: () =>  ExpenditureHistory(),
+    ),
+    GetPage(
+      binding: ServiceHistoryBindings(),
+      name: serviceHistory,
+      page: () =>  ServiceHistory(),
     ),
   ];
 

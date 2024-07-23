@@ -41,13 +41,13 @@ class RequestView extends GetView<RequestController> {
                             width: Get.width * 0.12,
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.notifications_none_outlined,
-                            color: Colors.white,
-                          ),
-                        ),
+                        // IconButton(
+                        //   onPressed: () {},
+                        //   icon: Icon(
+                        //     Icons.notifications_none_outlined,
+                        //     color: Colors.white,
+                        //   ),
+                        // ),
                       ],
                     ),
                     SizedBox(height: Get.height * 0.02),
@@ -411,39 +411,49 @@ class RequestView extends GetView<RequestController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.note_outlined,
-                              color: Colors.indigo,
-                            ),
-                            SizedBox(width: Get.width * 0.010),
-                            Text(
-                              "Expenditure History",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
+                        GestureDetector(
+                          onTap: (){
+                            Get.toNamed(Routes.expenditureHistory);
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.note_outlined,
+                                color: Colors.indigo,
                               ),
-                            ),
-                          ],
+                              SizedBox(width: Get.width * 0.010),
+                              Text(
+                                "Expenditure History",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.note_outlined,
-                              color: Colors.indigo,
-                            ),
-                            SizedBox(width: Get.width * 0.010),
-                            Text(
-                              "Service History",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
+                        GestureDetector(
+                          onTap: (){
+                            Get.toNamed(Routes.serviceHistory);
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.note_outlined,
+                                color: Colors.indigo,
                               ),
-                            ),
-                          ],
+                              SizedBox(width: Get.width * 0.010),
+                              Text(
+                                "Service History",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

@@ -105,13 +105,13 @@ class FeedbackView extends GetView<FeedbackController> {
                       width: Get.width * 0.12,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.notifications_none_outlined,
-                      color: Colors.white,
-                    ),
-                  ),
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   icon: Icon(
+                  //     Icons.notifications_none_outlined,
+                  //     color: Colors.white,
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: Get.height * 0.02),

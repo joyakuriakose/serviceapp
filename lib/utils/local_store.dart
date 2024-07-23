@@ -57,6 +57,7 @@ abstract class LocalStore {
     final value = storage.read(key);
     print('Get $key: $value');
     return value;
+
   }
 
   static bool? getBool(String key) {
