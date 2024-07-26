@@ -46,7 +46,7 @@ class ProductListView extends GetView<ProductListController> {
                 ),
                 SizedBox(height: Get.height * 0.02),
                 Text(
-                  "Product Listing",
+                  "Exclusive Offers For You",
                   style: MyTheme.regularTextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: Get.height * 0.027,
@@ -83,7 +83,7 @@ class BuildCardWidget extends StatelessWidget {
         });
         return Center(
           child: Padding(
-            padding: EdgeInsets.only(top: Get.height * 0.3),
+            padding: EdgeInsets.only(top: Get.height * 0.15),
             child: RoundedLoader(),
           ),
         );
@@ -95,174 +95,172 @@ class BuildCardWidget extends StatelessWidget {
         );
       } else {
         return ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (BuildContext context, int index) {
-              final product = products[index];
-              return Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(17),
-                    border: Border.all(color: Colors.white, width: 1),
-                  ),
-                  child: Padding(
-                      padding: EdgeInsets.only(top: 15.0, left: 0),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: Get.width * 0.9,
-                              // Width of the container
+          itemCount: products.length,
+          itemBuilder: (BuildContext context, int index) {
+            final product = products[index];
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(17),
+                border: Border.all(color: Colors.white, width: 1),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(top: 15.0, left: 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: Get.width * 0.9,
+                      height: Get.height * 0.17,
+                      child: product.images != null && product.images!.isNotEmpty
+                          ? ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: product.images!.length,
+                        itemBuilder: (BuildContext context, int imageIndex) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Container(
+                              width: Get.width * 0.6,
                               height: Get.height * 0.17,
-                              // Height of the container
-                              child: product.images != null &&
-                                      product.images!.isNotEmpty
-                                  ? ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: product.images!.length,
-                                      itemBuilder: (BuildContext context,
-                                          int imageIndex) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(left: 10.0),
-                                          child: Container(
-                                            width: Get.width * 0.7,
-                                            height: Get.height * 0.17,
-                                            margin: EdgeInsets.only(right: 8.0),
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                  '${product.imagesPath}/${product.images![imageIndex]}',
-                                                ),
-                                                fit: BoxFit.cover,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  : Container(
-                                      width: Get.width * 0.9,
-                                      height: Get.height * 0.17,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              AssetImage('assets/png/ac.png'),
-                                          fit: BoxFit.cover,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                            ),
-                            SizedBox(height: Get.height * 0.017),
-                            Padding(
-                              padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: Get.width * 0.014,
-                                        height: Get.height * 0.05,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Color.fromRGBO(66, 94, 236, 1),
-                                              Color.fromRGBO(34, 61, 192, 1),
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: Get.width * 0.02),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Brand Name",
-                                            style: MyTheme.regularTextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: Get.height * 0.018,
-                                            ),
-                                          ),
-                                          SizedBox(height: Get.height * 0.001),
-                                          Text(
-                                            product.productName ?? "",
-                                            style: MyTheme.regularTextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: Get.height * 0.018,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                              margin: EdgeInsets.only(right: 8.0),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    '${product.imagesPath}/${product.images![imageIndex]}',
                                   ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: Get.width * 0.014,
-                                        height: Get.height * 0.05,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Color.fromRGBO(66, 94, 236, 1),
-                                              // Start color
-                                              Color.fromRGBO(34, 61, 192, 1),
-                                              // End color
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: Get.width * 0.02),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Prize",
-                                            style: MyTheme.regularTextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: Get.height * 0.018,
-                                            ),
-                                          ),
-                                          SizedBox(height: Get.height * 0.001),
-                                          Text(
-                                            product.price ?? "",
-                                            style: MyTheme.regularTextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: Get.height * 0.018,
-                                                color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                          : Container(
+                        width: Get.width * 0.9,
+                        height: Get.height * 0.17,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/png/ac.png'),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: Get.height * 0.017),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: Get.width * 0.014,
+                                height: Get.height * 0.05,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromRGBO(66, 94, 236, 1),
+                                      Color.fromRGBO(34, 61, 192, 1),
                                     ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: Get.width * 0.02),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Brand Name",
+                                    style: MyTheme.regularTextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: Get.height * 0.018,
+                                    ),
+                                  ),
+                                  SizedBox(height: Get.height * 0.001),
+                                  Text(
+                                    product.productName ?? "",
+                                    style: MyTheme.regularTextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: Get.height * 0.018,
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                            MAButton(
-                              text: 'Buy Now',
-                              buttonPress: () async {
-                                // controller.feedbackSubmit();
-                              },
-                              isEnabled: true,
-                              padding: const EdgeInsets.all(20),
-                              height: Get.height * 0.05,
-                              width: Get.width * 0.3,
-                              clipBehavior: 0,
-                              radius: 30,
-                              fontSize: 16,
-                            ),
-                          ])));
-            });
+                            ],
+                          ),
+                          SizedBox(width: Get.width * 0.25),
+                          Row(
+                            children: [
+                              Container(
+                                width: Get.width * 0.014,
+                                height: Get.height * 0.05,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromRGBO(66, 94, 236, 1),
+                                      // Start color
+                                      Color.fromRGBO(34, 61, 192, 1),
+                                      // End color
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: Get.width * 0.02),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Prize",
+                                    style: MyTheme.regularTextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: Get.height * 0.018,
+                                    ),
+                                  ),
+                                  SizedBox(height: Get.height * 0.001),
+                                  Text(
+                                    product.price ?? "",
+                                    style: MyTheme.regularTextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: Get.height * 0.018,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    MAButton(
+                      text: 'Buy Now',
+                      buttonPress: () async {
+                        controller.buynowSubmit(int.parse(product.productId!));
+                      },
+                      isEnabled: true,
+                      padding: const EdgeInsets.all(20),
+                      height: Get.height * 0.05,
+                      width: Get.width * 0.3,
+                      clipBehavior: 0,
+                      radius: 30,
+                      fontSize: 16,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
       }
     });
   }
 }
+

@@ -290,86 +290,205 @@ class RequestView extends GetView<RequestController> {
                         ),
                       ],
                     ),
-                    SizedBox(height: Get.height * 0.05),
-                    Row(
-                      children: [
-                        // Container(
-                        //   width: Get.width * 0.014,
-                        //   height: Get.height * 0.05,
-                        //   decoration: BoxDecoration(
-                        //     gradient: LinearGradient(
-                        //       colors: [
-                        //         Color.fromRGBO(66, 94, 236, 1), // Start color
-                        //         Color.fromRGBO(34, 61, 192, 1), // End color
-                        //       ],
-                        //       begin: Alignment.centerLeft,
-                        //       end: Alignment.centerRight,
-                        //     ),
-                        //   ),
-                        // ),
-                        SizedBox(width: Get.width * 0.02),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: Get.width * 0.014,
-                                  height: Get.height * 0.04,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(66, 94, 236, 1), // Start color
-                                        Color.fromRGBO(34, 61, 192, 1), // End color
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: Get.width * 0.02),
-                                Text(
-                                  "Service Demands",
-                                  style: MyTheme.regularTextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: Get.height * 0.018,
-                                  ),
-                                ),
-                              ],
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: Get.width * 0.014,
+                            height: Get.height * 0.04,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromRGBO(66, 94, 236, 1), // Start color
+                                  Color.fromRGBO(34, 61, 192, 1), // End color
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
                             ),
-                            SizedBox(height: Get.height * 0.001),
-                            Padding(
-                              padding: EdgeInsets.only(top: 0.0),
+                          ),
+                          SizedBox(width: Get.width * 0.02),
+                          Text(
+                            "Service Executive Type",
+                            style: MyTheme.regularTextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: Get.height * 0.018,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: Get.width * 0.45,
+                      decoration: BoxDecoration(
+                        color: Colors.black, // Background color for the dropdown button
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Obx(() => DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: controller.serviceExecutiveType.value,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: Colors.white, // Arrow color
+                          ),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          dropdownColor: Colors.black, // Background color of the dropdown items
+                          onChanged: (String? newValue) {
+                            if (newValue != null) {
+                              controller.serviceExecutiveType.value = newValue;
+                            }
+                          },
+                          items: controller.executivetype.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
                               child: Container(
-                                width: Get.width * 0.8,
-                                height: Get.height * 0.08,
-                                child: Padding(
-                                  padding: EdgeInsets.only(bottom: 8.0),
-                                  child: Container(
-                                    child: TextFormField(
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                      ),
-                                      controller: controller.demandsController,
-                                      maxLines: 100,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        filled: false,
-                                        hintText: 'Enter your service demands',
-                                        hintStyle: TextStyle(
-                                          color: Colors.grey[700],
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
+                                color: value == controller.serviceExecutiveType.value ? Colors.black : Colors.transparent,
+                                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    color: value == controller.serviceExecutiveType.value ? Colors.white : Colors.white,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      )),
+                    ),
+
+
+
+
+                    SizedBox(height: Get.height * 0.05),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.04,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1), // Start color
+                                    Color.fromRGBO(34, 61, 192, 1), // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Text(
+                              "Enter the product count for service",
+                              style: MyTheme.regularTextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: Get.height * 0.018,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: Get.height * 0.001),
+                        Padding(
+                          padding: EdgeInsets.only(top: 0.0),
+                          child: Container(
+                            width: Get.width * 0.8,
+                            height: Get.height * 0.08,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 8.0),
+                              child: Container(
+                                child: TextFormField(
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                  ),
+                                  controller: controller.countController,
+                                  maxLines: 100,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    filled: false,
+                                    hintText: 'Enter your product count',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[700],
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: Get.width * 0.02),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: Get.width * 0.014,
+                              height: Get.height * 0.04,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(66, 94, 236, 1), // Start color
+                                    Color.fromRGBO(34, 61, 192, 1), // End color
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: Get.width * 0.02),
+                            Text(
+                              "Service Demands / Complaints",
+                              style: MyTheme.regularTextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: Get.height * 0.018,
+                              ),
+                            ),
                           ],
+                        ),
+                        SizedBox(height: Get.height * 0.001),
+                        Padding(
+                          padding: EdgeInsets.only(top: 0.0),
+                          child: Container(
+                            width: Get.width * 0.8,
+                            height: Get.height * 0.08,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 8.0),
+                              child: Container(
+                                child: TextFormField(
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 18,
+                                  ),
+                                  controller: controller.demandsController,
+                                  maxLines: 100,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    filled: false,
+                                    hintText: 'Enter your service demands',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[700],
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

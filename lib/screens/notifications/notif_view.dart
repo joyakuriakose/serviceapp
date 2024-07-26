@@ -38,13 +38,6 @@ class NotificationView extends GetView<NotificationController> {
                         width: Get.width * 0.12,
                       ),
                     ),
-                    // IconButton(
-                    //   onPressed: () {},
-                    //   icon: Icon(
-                    //     Icons.notifications_none_outlined,
-                    //     color: Colors.white,
-                    //   ),
-                    // ),
                   ],
                 ),
                 SizedBox(height: Get.height * 0.02),
@@ -135,47 +128,3 @@ class NotificationView extends GetView<NotificationController> {
     );
   }
 }
-
-
-
-
-
-// child: RichText(
-//   text: TextSpan(
-//     style:
-//         MyTheme.regularTextStyle(
-//       fontWeight: FontWeight.w400,
-//       fontSize:
-//           Get.height * 0.018,
-//       color: Colors
-//           .white, // Set default text color
-//     ),
-//     children: <TextSpan>[
-//       TextSpan(
-//         text:
-//             "Your AMC is ending on ",
-//       ),
-//       TextSpan(
-//         text: "26-05-2024 ",
-//         // Text to be colored differently
-//         style: TextStyle(
-//           color: Colors.indigo,
-//           // Set color to red
-//           fontWeight:
-//               FontWeight.w600,
-//           fontSize:
-//               Get.height * 0.018,
-//         ),
-//       ),
-//       TextSpan(
-//         text:
-//             ".  \nService executive has been assigned for your service appointment scheduled for ",
-//       ),
-//       TextSpan(
-//         text:
-//             "25-05-2024.", // Another date
-//       ),
-//       // Add more TextSpan for additional parts of the text
-//     ],
-//   ),
-// ),

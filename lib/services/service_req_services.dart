@@ -13,6 +13,8 @@ abstract class ServiceRequestServices {
     required int customer_id,
     int? amc_id, // Keep amc_id as int
     required int amc_type,
+    int? product_count,
+    String? service_executive_type,
     String? demand,
     String? service_date,
   }) async {
@@ -22,6 +24,8 @@ abstract class ServiceRequestServices {
       final Map<String, dynamic> data = {
         'customer_id': customer_id,
         'amc_type': amc_type,
+        'product_count' : product_count,
+        'service_executive_type' : service_executive_type,
         'demand': demand,
         if (amc_type == 0 && amc_id != null) 'amc_id': amc_id, // Pass as int
         if (amc_type == 1) 'service_date': service_date,

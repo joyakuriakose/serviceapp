@@ -28,11 +28,11 @@ class AcListingController extends GetxController {
   RxInt unseenNotificationCount = 0.obs;
   RxList<ProductList> productList = <ProductList>[].obs;
   AcListingController(this.id, this.customer_id);
-
+  var isContainerVisible = true.obs;
   final int customer_id;
 
 
-  initialVehicleListt() async {
+  initialProductListt() async {
     //Map body = customersListApiPayload;
     ApiResp resp = await ProductListServices.fetchProductList(customer_id);
     productList.value = ProductListModel.fromJson(resp.rdata).productList!;
@@ -77,7 +77,6 @@ class AcListingController extends GetxController {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('seenNotificationCount', notifications.length);
   }
-  var isContainerVisible = true.obs;
   initialAcListt() async {
     try {
       ApiResp? resp = await PackageListServices.fetchPackageList(id);
@@ -116,6 +115,6 @@ class AcListingController extends GetxController {
     super.onInit();
     fetchNotifications();
     initialAcListt();
-    initialVehicleListt();
+    initialProductListt();
   }
 }
