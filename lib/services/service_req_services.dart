@@ -13,7 +13,7 @@ abstract class ServiceRequestServices {
     required int customer_id,
     int? amc_id, // Keep amc_id as int
     required int amc_type,
-    int? product_count,
+    String? product_count,
     String? service_executive_type,
     String? demand,
     String? service_date,

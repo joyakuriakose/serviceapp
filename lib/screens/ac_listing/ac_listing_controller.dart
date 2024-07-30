@@ -28,19 +28,24 @@ class AcListingController extends GetxController {
   RxInt unseenNotificationCount = 0.obs;
   RxList<ProductList> productList = <ProductList>[].obs;
   AcListingController(this.id, this.customer_id);
-  var isContainerVisible = true.obs;
+  var isContainerVisible = false.obs; // Default to false
   final int customer_id;
 
-
   initialProductListt() async {
-    //Map body = customersListApiPayload;
-    ApiResp resp = await ProductListServices.fetchProductList(customer_id);
-    productList.value = ProductListModel.fromJson(resp.rdata).productList!;
-    App.productLists = productList.value;
-    //print(App.productLists.first.vehicleName);
-    return productList;
+    try {
+      ApiResp resp = await ProductListServices.fetchProductList(customer_id);
+      if (resp.ok == true) {
+        productList.value = ProductListModel.fromJson(resp.rdata).productList ?? [];
+        App.productLists = productList.value;
+        isContainerVisible.value = productList.isNotEmpty; // Show container only if productList is not empty
+      } else {
+        isContainerVisible.value = false; // Hide container if API response is not ok
+      }
+    } catch (e) {
+      isContainerVisible.value = false; // Hide container on error
+      print("Error fetching product list: $e");
+    }
   }
-
 
   Future<void> fetchNotifications() async {
     try {
@@ -77,6 +82,7 @@ class AcListingController extends GetxController {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('seenNotificationCount', notifications.length);
   }
+
   initialAcListt() async {
     try {
       ApiResp? resp = await PackageListServices.fetchPackageList(id);
@@ -118,3 +124,4 @@ class AcListingController extends GetxController {
     initialProductListt();
   }
 }
+

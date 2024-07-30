@@ -715,103 +715,107 @@ class AcListingView extends GetView<AcListingController> {
                                             ),
                                           )
                                               : Expanded(
-                                            child: ListView.builder(
-                                              scrollDirection: Axis.horizontal, // Horizontal scroll direction
-                                              itemCount: controller.productList.length,
-                                              itemBuilder: (BuildContext context, int index) {
-                                                final product = controller.productList[index];
-                                                return Container(
-                                                  margin: EdgeInsets.symmetric(horizontal: 5), // Adjust margin for horizontal scrolling
-                                                  width: Get.width * 0.9,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(12),
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Padding(
-                                                        padding: const EdgeInsets.all(5.0),
-                                                        child: Container(
-                                                          width: Get.width * 0.65,
-                                                          height: Get.height * 0.10,
-                                                          child: product.bannerImgPath != null &&
-                                                              product.bannerImg != null
-                                                              ? Image.network(
-                                                            '${product.bannerImgPath}/${product.bannerImg}',
-                                                            fit: BoxFit.cover,
-                                                          )
-                                                              : Image.asset(
-                                                            'assets/png/ac.png',
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        "Exclusive Offer",
-                                                        style: MyTheme.regularTextStyle(
-                                                          fontWeight: FontWeight.w500,
-                                                          fontSize: Get.height * 0.033,
-                                                        ),
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Text(
-                                                            "Now @ ",
-                                                            style: MyTheme.regularTextStyle(
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: Get.height * 0.026,
+                                            child: AppRefresh(
+                                              refreshFunction: () => controller.refresh(),
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.horizontal, // Horizontal scroll direction
+                                                itemCount: controller.productList.length,
+                                                itemBuilder: (BuildContext context, int index) {
+                                                  final product = controller.productList[index];
+                                                  return Container(
+                                                    margin: EdgeInsets.symmetric(horizontal: 5), // Adjust margin for horizontal scrolling
+                                                    width: Get.width * 0.9,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(12),
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(5.0),
+                                                          child: Container(
+                                                            width: Get.width * 0.65,
+                                                            height: Get.height * 0.10,
+                                                            child: product.bannerImgPath != null &&
+                                                                product.bannerImg != null
+                                                                ? Image.network(
+                                                              '${product.bannerImgPath}/${product.bannerImg}',
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                                : Image.asset(
+                                                              'assets/png/ac.png',
+                                                              fit: BoxFit.cover,
                                                             ),
                                                           ),
-                                                          SizedBox(width: Get.width * 0.01),
-                                                          Text(
-                                                            product.price ?? "",
-                                                            style: MyTheme.regularTextStyle(
-                                                              fontWeight: FontWeight.w500,
-                                                              fontSize: Get.height * 0.026,
-                                                            ),
+                                                        ),
+                                                        Text(
+                                                          "Exclusive Offer",
+                                                          style: MyTheme.regularTextStyle(
+                                                            fontWeight: FontWeight.w500,
+                                                            fontSize: Get.height * 0.033,
                                                           ),
-                                                        ],
-                                                      ),
-                                                      BuyNowButton(
-                                                        buttonPress: () async {
-                                                          Get.toNamed(Routes.productListView);
-                                                        },
-                                                        isEnabled: true,
-                                                        padding: const EdgeInsets.only(top: 10),
-                                                        height: Get.height * 0.055,
-                                                        width: Get.width * 0.35,
-                                                        clipBehavior: 0,
-                                                        radius: 30,
-                                                        fontSize: 16,
-                                                        text: 'Buy Now',
-                                                      ),
-                                                      SizedBox(height: Get.height * 0.01),
-                                                      Padding(
-                                                        padding:  EdgeInsets.only(bottom: 10.0),
-                                                        child: Row(
+                                                        ),
+                                                        Row(
                                                           mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor: Colors.white,
+                                                            Text(
+                                                              "Now @ ",
+                                                              style: MyTheme.regularTextStyle(
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: Get.height * 0.026,
+                                                              ),
                                                             ),
                                                             SizedBox(width: Get.width * 0.01),
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor: Colors.white,),
-                                                            SizedBox(width: Get.width * 0.01),
-                                                            CircleAvatar(
-                                                              radius: 5,
-                                                              backgroundColor: Colors.white,
+                                                            Text(
+                                                              product.price ?? "",
+                                                              style: MyTheme.regularTextStyle(
+                                                                fontWeight: FontWeight.w500,
+                                                                fontSize: Get.height * 0.026,
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
+                                                        BuyNowButton(
+                                                          buttonPress: () async {
+                                                            Get.toNamed(Routes.productListView);
+                                                          },
+                                                          isEnabled: true,
+                                                          padding: const EdgeInsets.only(top: 10),
+                                                          height: Get.height * 0.055,
+                                                          width: Get.width * 0.35,
+                                                          clipBehavior: 0,
+                                                          radius: 30,
+                                                          fontSize: 16,
+                                                          text: 'Buy Now',
+                                                        ),
+                                                        SizedBox(height: Get.height * 0.01),
+                                                        Padding(
+                                                          padding: EdgeInsets.only(bottom: 10.0),
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              CircleAvatar(
+                                                                radius: 5,
+                                                                backgroundColor: Colors.white,
+                                                              ),
+                                                              SizedBox(width: Get.width * 0.01),
+                                                              CircleAvatar(
+                                                                radius: 5,
+                                                                backgroundColor: Colors.white,
+                                                              ),
+                                                              SizedBox(width: Get.width * 0.01),
+                                                              CircleAvatar(
+                                                                radius: 5,
+                                                                backgroundColor: Colors.white,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -824,6 +828,7 @@ class AcListingView extends GetView<AcListingController> {
                           )
                               : Container(); // Return an empty container when not visible
                         })
+
                       ]),
                     ),
                   ],

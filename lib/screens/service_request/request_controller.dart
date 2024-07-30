@@ -111,11 +111,12 @@ class RequestController extends GetxController {
   final TextEditingController dateCtrl = TextEditingController(text: '');
   final FocusNode dateCtrlfNode = FocusNode();
   RxString serviceRequestType = 'Service Type '.obs;
-  RxString serviceExecutiveType = 'Select'.obs;
+  RxString serviceExecutiveType = 'Select'.obs; // Ensure initial value is one from the list
   RxString selectedAmcCode = ''.obs;
   Map<String, int> amcCodeToIdMap = {}; // Map to store amc_code to amc_id
   List<String> servicetype = ['Select', 'AMC', 'Non-AMC'];
-  List<String> executivetype = ['Select', 'Client', 'Technician'];
+  List<String> executivetype = ['Select', 'Technician', 'Service Man'];
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController serviceRequestController = TextEditingController();
   final TextEditingController serviceExecutiveController = TextEditingController();
@@ -195,35 +196,11 @@ class RequestController extends GetxController {
         return;
       }
 
-      if (serviceExecutiveType.value == 'Select') {
-        Get.snackbar(
-          "Error",
-          "Please select a service executive type",
-          backgroundColor: Colors.red,
-          snackPosition: SnackPosition.TOP,
-          duration: Duration(seconds: 3),
-        );
-        isScreenProgress.value = false;
-        return;
-      }
-
-      int? productCount;
-      try {
-        productCount = int.parse(countController.text);
-      } catch (e) {
-        Get.snackbar(
-          "Invalid Input",
-          "Please enter a valid number for product count",
-          backgroundColor: Colors.red,
-          snackPosition: SnackPosition.TOP,
-          duration: Duration(seconds: 3),
-        );
-        isScreenProgress.value = false;
-        return;
-      }
+      //int? productCount;
 
       ApiResp resp;
-      String executiveType = serviceExecutiveType.value == 'Client' ? '1' : '2';
+
+      String executiveType = serviceExecutiveType.value == 'Technician' ? '2' : '1';
       if (serviceRequestType.value == 'AMC') {
         int amcId = amcCodeToIdMap[selectedAmcCode.value]!;
         resp = await ServiceRequestServices.fetchUser(
@@ -231,7 +208,6 @@ class RequestController extends GetxController {
           amc_id: amcId,
           amc_type: 0,
           service_executive_type: executiveType, // Pass as String
-          product_count: productCount,
           demand: demandsController.text,
         );
       } else {
@@ -240,7 +216,7 @@ class RequestController extends GetxController {
           amc_type: 1,
           demand: demandsController.text,
           service_executive_type: executiveType, // Pass as String
-          product_count: productCount,
+          product_count: countController.text,
           service_date: dateCtrl.text,
         );
       }
@@ -284,7 +260,7 @@ class RequestController extends GetxController {
       } else if (e is DioError) {
         errorMessage = await getErrorMessage(e.response?.data);
       } else {
-        errorMessage = "An unexpected error occurred";
+        errorMessage = "AMC completed";
       }
       print("Catch Error Message: $errorMessage");
       Get.snackbar(
@@ -312,8 +288,11 @@ class RequestController extends GetxController {
     demandsController.clear();
     dateCtrl.clear();
     serviceRequestType.value = '';
+    serviceExecutiveType.value = '';
+    countController.clear();
   }
 }
+
 
 
   // Future<void> submitServiceRequest() async {

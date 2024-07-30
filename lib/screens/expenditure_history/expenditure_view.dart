@@ -10,6 +10,7 @@ import '../../components/app_refresh.dart';
 import '../../components/rounded_loader.dart';
 import '../../utils/my_theme.dart';
 import '../../utils/my_utils.dart';
+import '../../utils/routes.dart';
 import 'expenditure_controller.dart';
 
 class ExpenditureHistory extends GetView<ExpenditureController> {
@@ -63,7 +64,64 @@ class ExpenditureHistory extends GetView<ExpenditureController> {
               ],
             ),
           ),
-        ))));
+        )),
+          bottomNavigationBar: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Color.fromRGBO(34, 61, 192, 1),
+              // Blue background color
+              // Make the background transparent to show the container's color
+              elevation: 0,
+              // Remove sh adow
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home_outlined,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  label: '',
+                ),
+              ],
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white70,
+              onTap: (index) {
+                switch (index) {
+                  case 0:
+                    Get.back(); // Replace with your home route
+                    break;
+                  case 1:
+                    Get.toNamed(Routes.acListing);
+                    break;
+                  case 2:
+                    Get.toNamed(Routes
+                        .productListView); // Replace with your settings route
+                    break;
+                }
+              },
+            ),
+          ),
+        ));
   }
 }
 
@@ -450,7 +508,7 @@ class BuildCardWidget extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: Get.width * 0.29),
+                                  SizedBox(width: Get.width * 0.2),
                                   Row(
                                     children: [
                                       Container(
@@ -475,7 +533,7 @@ class BuildCardWidget extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Total Fee",
+                                            "Total Charge",
                                             style: MyTheme.regularTextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: Get.height * 0.018,

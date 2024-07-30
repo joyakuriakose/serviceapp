@@ -70,7 +70,8 @@ class NotificationView extends GetView<NotificationController> {
                     );
                   } else {
                     return Container(
-                      height: Get.height * 0.7, // Adjust the height as per your requirements
+                      height: Get.height * 0.7,
+                      // Adjust the height as per your requirements
                       child: ListView.builder(
                         itemCount: notifications.length,
                         itemBuilder: (context, index) {
@@ -96,11 +97,13 @@ class NotificationView extends GetView<NotificationController> {
                                 SizedBox(width: Get.width * 0.02),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         notification.description != null &&
-                                            notification.description!.isNotEmpty
+                                                notification
+                                                    .description!.isNotEmpty
                                             ? notification.description!
                                             : '',
                                         style: MyTheme.regularTextStyle(
@@ -122,6 +125,61 @@ class NotificationView extends GetView<NotificationController> {
                 }),
               ],
             ),
+          ),
+        ),
+        bottomNavigationBar: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Color.fromRGBO(34, 61, 192, 1),
+            // Blue background color
+            // Make the background transparent to show the container's color
+            elevation: 0,
+            // Remove sh adow
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home_outlined,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                label: '',
+              ),
+            ],
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  Get.back(); // Replace with your home route
+                  break;
+                case 1:
+                  Get.toNamed(Routes.acListing);
+                  break;
+                  Get.toNamed(Routes
+                      .productListView); // Replace with your settings route
+                  break;
+              }
+            },
           ),
         ),
       ),

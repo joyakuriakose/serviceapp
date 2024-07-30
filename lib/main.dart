@@ -19,6 +19,7 @@ void main() async{
       debugShowCheckedModeBanner: false,
       title: App.appTitle,
       theme: ThemeData(
+        canvasColor: Colors.transparent,
         primarySwatch: MyTheme.primaryColor1,
         unselectedWidgetColor: Colors.blue,
       ),
