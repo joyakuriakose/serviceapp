@@ -734,17 +734,17 @@ class AcListingView extends GetView<AcListingController> {
                                                         Padding(
                                                           padding: const EdgeInsets.all(5.0),
                                                           child: Container(
-                                                            width: Get.width * 0.65,
+                                                            width: Get.width * 0.75,
                                                             height: Get.height * 0.10,
                                                             child: product.bannerImgPath != null &&
                                                                 product.bannerImg != null
                                                                 ? Image.network(
                                                               '${product.bannerImgPath}/${product.bannerImg}',
-                                                              fit: BoxFit.cover,
+                                                              fit: BoxFit.fill,
                                                             )
                                                                 : Image.asset(
                                                               'assets/png/ac.png',
-                                                              fit: BoxFit.cover,
+                                                              fit: BoxFit.fill,
                                                             ),
                                                           ),
                                                         ),

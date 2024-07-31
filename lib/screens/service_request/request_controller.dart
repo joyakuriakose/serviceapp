@@ -196,6 +196,17 @@ class RequestController extends GetxController {
         return;
       }
 
+      if (serviceExecutiveType.value.isEmpty) {
+        Get.snackbar(
+          "Error",
+          "Please select a service executive type",
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.TOP,
+          duration: Duration(seconds: 3),
+        );
+        isScreenProgress.value = false;
+        return;
+      }
       //int? productCount;
 
       ApiResp resp;

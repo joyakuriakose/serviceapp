@@ -272,49 +272,50 @@ class BuildCardWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              width: Get.width * 0.014,
-                              height: Get.height * 0.05,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color.fromRGBO(66, 94, 236, 1),
-                                    // Start color
-                                    Color.fromRGBO(34, 61, 192, 1),
-                                    // End color
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: Get.width * 0.02),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Model Name",
-                                  style: MyTheme.regularTextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: Get.height * 0.018,
-                                  ),
-                                ),
-                                SizedBox(height: Get.height * 0.001),
-                                Text(
-                                  controller.amcdetails.value.modelName ??
-                                      "------",
-                                  style: MyTheme.regularTextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: Get.height * 0.018,
-                                      color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       width: Get.width * 0.014,
+                        //       height: Get.height * 0.05,
+                        //       decoration: BoxDecoration(
+                        //         gradient: LinearGradient(
+                        //           colors: [
+                        //             Color.fromRGBO(66, 94, 236, 1),
+                        //             // Start color
+                        //             Color.fromRGBO(34, 61, 192, 1),
+                        //             // End color
+                        //           ],
+                        //           begin: Alignment.centerLeft,
+                        //           end: Alignment.centerRight,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(width: Get.width * 0.02),
+                        //     Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         Text(
+                        //           "Model Name",
+                        //           style: MyTheme.regularTextStyle(
+                        //             fontWeight: FontWeight.w400,
+                        //             fontSize: Get.height * 0.018,
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: Get.height * 0.001),
+                        //         Text(
+                        //           controller.amcdetails.value.modelName ??
+                        //               "------",
+                        //           style: MyTheme.regularTextStyle(
+                        //               fontWeight: FontWeight.w700,
+                        //               fontSize: Get.height * 0.018,
+                        //               color: Colors.white),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ],
+                        // ),
                       ],
+
                     ),
                   ),
                   SizedBox(height: Get.height * 0.017),
@@ -535,8 +536,9 @@ class BuildCardWidget extends StatelessWidget {
                                 ),
                                 SizedBox(height: Get.height * 0.001),
                                 Text(
-                                  _formatDate(controller.amcdetails.value
-                                      .serviceDates![0].date),
+                                  controller.amcdetails.value.serviceDates![0].date != null
+                                      ? _formatDate(controller.amcdetails.value.serviceDates![0].date)
+                                      : '',
                                   style: MyTheme.regularTextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: Get.height * 0.018,
@@ -694,8 +696,9 @@ class BuildCardWidget extends StatelessWidget {
                                 ),
                                 SizedBox(height: Get.height * 0.001),
                                 Text(
-                                  _formatDate(controller.amcdetails.value
-                                      .serviceDates![1].date),
+                                  controller.amcdetails.value.serviceDates![1].date != null
+                                      ? _formatDate(controller.amcdetails.value.serviceDates![1].date)
+                                      : '.....',
                                   style: MyTheme.regularTextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: Get.height * 0.018,
@@ -852,8 +855,9 @@ class BuildCardWidget extends StatelessWidget {
                                 ),
                                 SizedBox(height: Get.height * 0.001),
                                 Text(
-                                  _formatDate(controller.amcdetails.value
-                                      .serviceDates![2].date),
+                                  controller.amcdetails.value.serviceDates![2].date != null
+                                      ? _formatDate(controller.amcdetails.value.serviceDates![2].date)
+                                      : '.....',
                                   style: MyTheme.regularTextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: Get.height * 0.018,
@@ -1010,8 +1014,9 @@ class BuildCardWidget extends StatelessWidget {
                                 ),
                                 SizedBox(height: Get.height * 0.001),
                                 Text(
-                                  _formatDate(controller.amcdetails.value
-                                      .serviceDates![3].date),
+                                  controller.amcdetails.value.serviceDates![3].date != null
+                                      ? _formatDate(controller.amcdetails.value.serviceDates![3].date)
+                                      : '.....',
                                   style: MyTheme.regularTextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: Get.height * 0.018,
