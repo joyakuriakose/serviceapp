@@ -2,6 +2,7 @@
 
 import 'model/expenditure_hist_model.dart';
 import 'model/get_amclist_model.dart';
+import 'model/nonamc_feedback.dart';
 import 'model/notification_model.dart';
 import 'model/package_detail_model.dart';
 import 'model/package_listing_model.dart';
@@ -20,6 +21,7 @@ abstract class App{
   static List<Customer> custom = [];
   static List<Notificationss> notification = [];
   static List<ProductList> productLists = [];
+  static List<NonamcServiceList> nonFeedLists = [];
   static List<ServiceHistory> serviceHistory = [];
   static List<ExpenditureHistory> expenditureHistory = [];
 

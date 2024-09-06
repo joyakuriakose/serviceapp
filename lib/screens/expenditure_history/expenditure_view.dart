@@ -182,7 +182,8 @@ class BuildCardWidget extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Row(
+                                  // if (expendHist.amcCode != null && expendHist.amcCode!.isNotEmpty)
+                                    Row(
                                     children: [
                                       Container(
                                         width: Get.width * 0.014,

@@ -29,7 +29,7 @@ class FeedbackView extends GetView<FeedbackController> {
           isSelected = controller.selectedOption3.value == option.toString();
           break;
       }
-      Get.put(DetailPageController());
+     // Get.put(DetailPageController());
       return GestureDetector(
         onTap: () {
           controller.selectOption(question, option);

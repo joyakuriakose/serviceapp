@@ -202,29 +202,56 @@ class BuildCardWidget extends StatelessWidget {
                                   ),
                                   SizedBox(width: Get.width * 0.02),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "AMC Code",
-                                        style: MyTheme.regularTextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: Get.height * 0.018,
+                                      // Check if amcType is "Non Amc"
+                                      if (SerHis.amcType == "Non Amc")
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Service Request Type",
+                                              style: MyTheme.regularTextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: Get.height * 0.018,
+                                              ),
+                                            ),
+                                            SizedBox(height: Get.height * 0.001),
+                                            Text(
+                                              SerHis.amcType ?? "----",
+                                              style: MyTheme.regularTextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: Get.height * 0.018,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      else
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "AMC Code",
+                                              style: MyTheme.regularTextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: Get.height * 0.018,
+                                              ),
+                                            ),
+                                            SizedBox(height: Get.height * 0.001),
+                                            Text(
+                                              SerHis.amcCode ?? "----",
+                                              style: MyTheme.regularTextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: Get.height * 0.018,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      SizedBox(height: Get.height * 0.001),
-                                      Text(
-                                        SerHis.amcCode ?? "----",
-                                        style: MyTheme.regularTextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: Get.height * 0.018,
-                                        ),
-                                      ),
                                     ],
-                                  ),
+                                  )
                                 ],
                               ),
-                              SizedBox(width: Get.width * 0.18),
+                              SizedBox(width: Get.width * 0.14),
                               Row(
                                 children: [
                                   Container(
@@ -272,7 +299,7 @@ class BuildCardWidget extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 15, bottom: 15),
+                              left: 20.0, right: 0.0, top: 15, bottom: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -303,7 +330,7 @@ class BuildCardWidget extends StatelessWidget {
                                         "No.of AC's Covered",
                                         style: MyTheme.regularTextStyle(
                                           fontWeight: FontWeight.w400,
-                                          fontSize: Get.height * 0.018,
+                                          fontSize: Get.height * 0.017,
                                         ),
                                       ),
                                       SizedBox(height: Get.height * 0.001),
@@ -319,48 +346,48 @@ class BuildCardWidget extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(width: Get.width * 0.03),
-                              Row(
-                                children: [
-                                  Container(
-                                    width: Get.width * 0.014,
-                                    height: Get.height * 0.05,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color.fromRGBO(66, 94, 236, 1),
-                                          // Start color
-                                          Color.fromRGBO(34, 61, 192, 1),
-                                          // End color
-                                        ],
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: Get.width * 0.02),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Service Request Type",
-                                        style: MyTheme.regularTextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: Get.height * 0.018,
+                              if (SerHis.amcType != "Non Amc")
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: Get.width * 0.014,
+                                      height: Get.height * 0.05,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color.fromRGBO(66, 94, 236, 1), // Start color
+                                            Color.fromRGBO(34, 61, 192, 1), // End color
+                                          ],
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
                                         ),
                                       ),
-                                      SizedBox(height: Get.height * 0.001),
-                                      Text(
-                                        SerHis.amcType ?? "----",
-                                        style: MyTheme.regularTextStyle(
+                                    ),
+                                    SizedBox(width: Get.width * 0.02),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Service Request Type",
+                                          style: MyTheme.regularTextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: Get.height * 0.017,
+                                          ),
+                                        ),
+                                        SizedBox(height: Get.height * 0.001),
+                                        Text(
+                                          SerHis.amcType ?? "----",
+                                          style: MyTheme.regularTextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: Get.height * 0.018,
-                                            color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+
                             ],
                           ),
                         ),
@@ -390,14 +417,13 @@ class BuildCardWidget extends StatelessWidget {
                                   ),
                                   SizedBox(width: Get.width * 0.02),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Service Demands",
                                         style: MyTheme.regularTextStyle(
                                           fontWeight: FontWeight.w400,
-                                          fontSize: Get.height * 0.018,
+                                          fontSize: Get.height * 0.017,
                                         ),
                                       ),
                                       SizedBox(height: Get.height * 0.001),
@@ -407,9 +433,11 @@ class BuildCardWidget extends StatelessWidget {
                                           fontWeight: FontWeight.w700,
                                           fontSize: Get.height * 0.018,
                                         ),
+                                        maxLines: 2, // Allow the text to wrap to multiple lines
+                                        overflow: TextOverflow.visible, // Ensure the text overflows to the next line if necessary
                                       ),
                                     ],
-                                  ),
+                                  )
                                 ],
                               ),
                             ],

@@ -6,7 +6,7 @@ abstract class ExpenditureHistoryServices {
   static Future<ApiResp> fetchExpenditureHistory(int customer_id) async {
     dynamic resp;
     await errMAsync(() async {
-      resp = await MyDio().get('https://seowebsites.in/service_management/api/v1/expenditure-history?customer_id=$customer_id');
+      resp = await MyDio().get('https://tipsandplans.com/admin/api/v1/expenditure-history?customer_id=$customer_id');
     });
     return resp != null
         ? ApiResp(

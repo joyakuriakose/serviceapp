@@ -18,7 +18,7 @@ abstract class PackageDetailServices {
   static Future<ApiResp> fetchPackageDetails(int amcId) async {
     dynamic resp;
     await errMAsync(() async {
-      resp = await MyDio().get('https://seowebsites.in/service_management/api/v1/get-amc-details?amc_id=$amcId');
+      resp = await MyDio().get('https://tipsandplans.com/admin/api/v1/get-amc-details?amc_id=$amcId');
     });
 
     return resp != null

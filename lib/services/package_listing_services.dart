@@ -18,7 +18,7 @@ abstract class PackageListServices {
   static Future<ApiResp> fetchPackageList(int id) async {
     dynamic resp;
     await errMAsync(() async {
-      resp = await MyDio().get('https://seowebsites.in/service_management/api/v1/get-customer?id=$id');
+      resp = await MyDio().get('https://tipsandplans.com/admin/api/v1/get-customer?id=$id');
     });
     respNew = resp != null
         ? ApiResp(

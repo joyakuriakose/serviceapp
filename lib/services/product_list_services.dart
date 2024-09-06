@@ -6,7 +6,7 @@ abstract class ProductListServices {
   static Future<ApiResp> fetchProductList(int customer_id) async {
     dynamic resp;
     await errMAsync(() async {
-      resp = await MyDio().get('https://seowebsites.in/service_management/api/v1/get-product-list?customer_id=$customer_id');
+      resp = await MyDio().get('https://tipsandplans.com/admin/api/v1/get-product-list?customer_id=$customer_id');
     });
     return resp != null
         ? ApiResp(

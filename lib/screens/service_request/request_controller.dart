@@ -107,12 +107,16 @@ import '../../utils/my_utils.dart';
 class RequestController extends GetxController {
   RxList<AmcList> amclist = <AmcList>[].obs;
   RxList<String> amcCodes = <String>[].obs;
+  RxList<String> amcDemands = <String>[].obs;
+  RxList<String> selectedDemands = <String>[].obs;
+
   RxBool isScreenProgress = true.obs;
   final TextEditingController dateCtrl = TextEditingController(text: '');
   final FocusNode dateCtrlfNode = FocusNode();
   RxString serviceRequestType = 'Service Type '.obs;
   RxString serviceExecutiveType = 'Select'.obs; // Ensure initial value is one from the list
   RxString selectedAmcCode = ''.obs;
+  RxString selectDemands = ''.obs;
   Map<String, int> amcCodeToIdMap = {}; // Map to store amc_code to amc_id
   List<String> servicetype = ['Select', 'AMC', 'Non-AMC'];
   List<String> executivetype = ['Select', 'Technician', 'Service Man'];
@@ -121,6 +125,7 @@ class RequestController extends GetxController {
   final TextEditingController serviceRequestController = TextEditingController();
   final TextEditingController serviceExecutiveController = TextEditingController();
   final TextEditingController demandsController = TextEditingController();
+  final TextEditingController otherDemandsController = TextEditingController();
   final TextEditingController countController = TextEditingController();
   final int id;
   final int active;
@@ -133,6 +138,7 @@ class RequestController extends GetxController {
     dateCtrl.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     initialAcListt();
   }
+  RxMap<String, String> demandOption = <String, String>{}.obs; // RxMap to store demand options
 
   void initialAcListt() async {
     try {
@@ -140,6 +146,9 @@ class RequestController extends GetxController {
       if (resp != null && resp.ok == true) {
         var packageListingModel = GetAmcList.fromJson(resp.rdata);
         amclist.value = packageListingModel.amcList!;
+        demandOption.value = packageListingModel.demandOption ?? {}; // Store demand options
+
+        // Update amcCodes if necessary
         amcCodes.value = amclist.map((amc) {
           if (amc.code != null && amc.id != null) {
             amcCodeToIdMap[amc.code!] = amc.id!;
@@ -196,41 +205,34 @@ class RequestController extends GetxController {
         return;
       }
 
-      if (serviceExecutiveType.value.isEmpty) {
-        Get.snackbar(
-          "Error",
-          "Please select a service executive type",
-          backgroundColor: Colors.red,
-          snackPosition: SnackPosition.TOP,
-          duration: Duration(seconds: 3),
-        );
-        isScreenProgress.value = false;
-        return;
-      }
-      //int? productCount;
-
+      // Fetch the correct API response
       ApiResp resp;
 
       String executiveType = serviceExecutiveType.value == 'Technician' ? '2' : '1';
+      List<String> selectedDemandsList = selectedDemands.toList();
+
       if (serviceRequestType.value == 'AMC') {
         int amcId = amcCodeToIdMap[selectedAmcCode.value]!;
         resp = await ServiceRequestServices.fetchUser(
           customer_id: id,
           amc_id: amcId,
           amc_type: 0,
-          service_executive_type: executiveType, // Pass as String
           demand: demandsController.text,
+          demand_option_fk: selectedDemandsList,
+          other_demand: otherDemandsController.text,
         );
       } else {
         resp = await ServiceRequestServices.fetchUser(
           customer_id: id,
           amc_type: 1,
           demand: demandsController.text,
-          service_executive_type: executiveType, // Pass as String
           product_count: countController.text,
           service_date: dateCtrl.text,
+          other_demand: otherDemandsController.text,
+          demand_option_fk: selectedDemandsList,
         );
       }
+
       isScreenProgress.value = false;
 
       print("Response: ${resp.toJson()}");
@@ -301,6 +303,8 @@ class RequestController extends GetxController {
     serviceRequestType.value = '';
     serviceExecutiveType.value = '';
     countController.clear();
+    demandsController.clear();
+    otherDemandsController.clear();
   }
 }
 

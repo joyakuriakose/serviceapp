@@ -35,6 +35,7 @@ class PackageListingModel {
 class AmcDetail {
   int? amcId;
   String? code;
+  String? status;
   DateTime? startDate;
   DateTime? endDate;
   String? packageName;
@@ -44,6 +45,7 @@ class AmcDetail {
   AmcDetail({
     this.amcId,
     this.code,
+    this.status,
     this.startDate,
     this.endDate,
     this.packageName,
@@ -54,6 +56,7 @@ class AmcDetail {
   factory AmcDetail.fromJson(Map<String, dynamic> json) => AmcDetail(
     amcId: json["amc_id"],
     code: json["code"],
+    status: json["status"],
   //  startDate: DateTime.parse(json["start_date"]),
     startDate: json["start_date"] != null
         ? DateTime.parse(json["start_date"])
@@ -70,6 +73,7 @@ class AmcDetail {
   Map<String, dynamic> toJson() => {
     "amc_id": amcId,
     "code": code,
+    "status": status,
    // "start_date": "${startDate!.year.toString().padLeft(4, '0')}-${startDate!.month.toString().padLeft(2, '0')}-${startDate!.day.toString().padLeft(2, '0')}",
     "start_date": startDate != null
         ? startDate!.toIso8601String()

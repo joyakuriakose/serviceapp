@@ -17,16 +17,23 @@ abstract class ServiceRequestServices {
     String? service_executive_type,
     String? demand,
     String? service_date,
+    List<String>? demand_option_fk, // Updated to accept a list of strings
+    String? other_demand,
   }) async {
     try {
       String token = await getToken();
 
+      // Convert the list of selected demands to a comma-separated string
+      String? demandOptionString = demand_option_fk?.join(',');
+
       final Map<String, dynamic> data = {
         'customer_id': customer_id,
         'amc_type': amc_type,
-        'product_count' : product_count,
-        'service_executive_type' : service_executive_type,
+        'product_count': product_count,
+        'service_executive_type': service_executive_type,
         'demand': demand,
+        'demand_option_fk': demandOptionString, // Send as comma-separated string
+        'other_demand': other_demand,
         if (amc_type == 0 && amc_id != null) 'amc_id': amc_id, // Pass as int
         if (amc_type == 1) 'service_date': service_date,
       };
@@ -36,7 +43,7 @@ abstract class ServiceRequestServices {
         data: data,
         options: Options(
           headers: {
-            'Authorization': 'Token ${App.user.apiToken}',
+            'Authorization': 'Token $token',
             'Content-Type': 'application/json',
           },
         ),
@@ -67,13 +74,13 @@ abstract class ServiceRequestServices {
   static void _handleDioError(DioError resp) {
     if (resp.response?.statusCode == 400) {
       log('400 >> ${resp.response}');
-      showMsg("Invalid Details", "Registration Failed");
+      showMsg("Invalid Details", "Request Failed");
     } else if (resp.type == DioErrorType.connectTimeout) {
-      showMsg('Connection timed-out. Check internet connection.', "Registration Failed");
+      showMsg('Connection timed-out. Check internet connection.', "Request Failed");
     } else if (resp.type == DioErrorType.receiveTimeout) {
-      showMsg('Unable to connect to the server', "Registration Failed");
+      showMsg('Unable to connect to the server', "Request Failed");
     } else if (resp.type == DioErrorType.other) {
-      showMsg('Something went wrong with server communication', "Registration Failed");
+      showMsg('Something went wrong with server communication', "Request Failed");
     }
   }
 

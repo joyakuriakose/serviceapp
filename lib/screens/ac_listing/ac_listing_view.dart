@@ -277,6 +277,37 @@ class AcListingView extends GetView<AcListingController> {
                       }
                     }),
                     SizedBox(height: Get.height * 0.02),
+                    Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        width: double.infinity,
+                        height: Get.height * 0.1,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(17),
+                          border: Border.all(color: Colors.blue, width: 1),
+                        ),
+                        child: Padding(
+                            padding: EdgeInsets.only(
+                                top: 10, right: 10, left: 20, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Non-AMC Request",
+                                  style: MyTheme.regularTextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: Get.height * 0.020,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    Get.toNamed(Routes.nonamcListing);
+                                  },
+                                  icon: Icon(Icons.arrow_forward_ios_outlined),
+                                  color: Colors.blue,
+                                  iconSize: 25,
+                                )
+                              ],
+                            ))),
                     // Add some space before the ListView
                     Expanded(
                       child: Stack(children: [
@@ -354,6 +385,23 @@ class AcListingView extends GetView<AcListingController> {
                                                     fontSize:
                                                         Get.height * 0.019,
                                                   ),
+                                                ),
+                                                SizedBox(
+                                                    width: Get.width * 0.2),
+                                                Text(
+                                                  getStatusText(
+                                                              amcDetail.status)
+                                                          .isNotEmpty
+                                                      ? getStatusText(
+                                                          amcDetail.status)
+                                                      : '',
+                                                  style:
+                                                      MyTheme.regularTextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: Get.height *
+                                                              0.018,
+                                                          color: Colors.red),
                                                 ),
                                               ],
                                             ),
@@ -668,167 +716,166 @@ class AcListingView extends GetView<AcListingController> {
                             ),
                           ),
                         ),
-                        Obx(() {
-                          return controller.isContainerVisible.value
-                              ? Positioned(
-                            bottom: 5,
-                            left: 10,
-                            right: 10,
-                            child: Center(
-                              child: Container(
-                                height: Get.height * 0.35,
-                                width: Get.width * 0.9,
-                                decoration: BoxDecoration(
-                                  color: Color.fromRGBO(66, 94, 236, 0.5).withOpacity(0.75),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    Center(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.only(right: 10),
-                                            alignment: Alignment.topRight,
-                                            child: IconButton(
-                                              onPressed: () {
-                                                print('Close button pressed');
-                                                print('Current isContainerVisible value: ${controller.isContainerVisible.value}');
-                                                controller.isContainerVisible.value = false;
-                                                print('New isContainerVisible value: ${controller.isContainerVisible.value}');
-                                              },
-                                              icon: Icon(Icons.close, color: Colors.white, size: 20),
-                                            ),
-                                          ),
-                                          controller.isLoading.value
-                                              ? Center(
-                                            child: Padding(
-                                              padding: EdgeInsets.only(top: Get.height * 0.3),
-                                              child: RoundedLoader(),
-                                            ),
-                                          )
-                                              : controller.productList.isEmpty
-                                              ? Center(
-                                            child: MAResultEmpty(
-                                              msg: 'Results Empty',
-                                            ),
-                                          )
-                                              : Expanded(
-                                            child: AppRefresh(
-                                              refreshFunction: () => controller.refresh(),
-                                              child: ListView.builder(
-                                                scrollDirection: Axis.horizontal, // Horizontal scroll direction
-                                                itemCount: controller.productList.length,
-                                                itemBuilder: (BuildContext context, int index) {
-                                                  final product = controller.productList[index];
-                                                  return Container(
-                                                    margin: EdgeInsets.symmetric(horizontal: 5), // Adjust margin for horizontal scrolling
-                                                    width: Get.width * 0.9,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(12),
-                                                    ),
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(5.0),
-                                                          child: Container(
-                                                            width: Get.width * 0.75,
-                                                            height: Get.height * 0.10,
-                                                            child: product.bannerImgPath != null &&
-                                                                product.bannerImg != null
-                                                                ? Image.network(
-                                                              '${product.bannerImgPath}/${product.bannerImg}',
-                                                              fit: BoxFit.fill,
-                                                            )
-                                                                : Image.asset(
-                                                              'assets/png/ac.png',
-                                                              fit: BoxFit.fill,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          "Exclusive Offer",
-                                                          style: MyTheme.regularTextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: Get.height * 0.033,
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: [
-                                                            Text(
-                                                              "Now @ ",
-                                                              style: MyTheme.regularTextStyle(
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: Get.height * 0.026,
-                                                              ),
-                                                            ),
-                                                            SizedBox(width: Get.width * 0.01),
-                                                            Text(
-                                                              product.price ?? "",
-                                                              style: MyTheme.regularTextStyle(
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: Get.height * 0.026,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        BuyNowButton(
-                                                          buttonPress: () async {
-                                                            Get.toNamed(Routes.productListView);
-                                                          },
-                                                          isEnabled: true,
-                                                          padding: const EdgeInsets.only(top: 10),
-                                                          height: Get.height * 0.055,
-                                                          width: Get.width * 0.35,
-                                                          clipBehavior: 0,
-                                                          radius: 30,
-                                                          fontSize: 16,
-                                                          text: 'Buy Now',
-                                                        ),
-                                                        SizedBox(height: Get.height * 0.01),
-                                                        Padding(
-                                                          padding: EdgeInsets.only(bottom: 10.0),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                            children: [
-                                                              CircleAvatar(
-                                                                radius: 5,
-                                                                backgroundColor: Colors.white,
-                                                              ),
-                                                              SizedBox(width: Get.width * 0.01),
-                                                              CircleAvatar(
-                                                                radius: 5,
-                                                                backgroundColor: Colors.white,
-                                                              ),
-                                                              SizedBox(width: Get.width * 0.01),
-                                                              CircleAvatar(
-                                                                radius: 5,
-                                                                backgroundColor: Colors.white,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                              : Container(); // Return an empty container when not visible
-                        })
-
+                        // Obx(() {
+                        //   return controller.isContainerVisible.value
+                        //       ? Positioned(
+                        //     bottom: 5,
+                        //     left: 10,
+                        //     right: 10,
+                        //     child: Center(
+                        //       child: Container(
+                        //         height: Get.height * 0.35,
+                        //         width: Get.width * 0.9,
+                        //         decoration: BoxDecoration(
+                        //           color: Color.fromRGBO(66, 94, 236, 0.5).withOpacity(0.75),
+                        //           borderRadius: BorderRadius.circular(20),
+                        //         ),
+                        //         child: Stack(
+                        //           children: [
+                        //             Center(
+                        //               child: Column(
+                        //                 mainAxisAlignment: MainAxisAlignment.center,
+                        //                 children: [
+                        //                   Container(
+                        //                     padding: EdgeInsets.only(right: 10),
+                        //                     alignment: Alignment.topRight,
+                        //                     child: IconButton(
+                        //                       onPressed: () {
+                        //                         print('Close button pressed');
+                        //                         print('Current isContainerVisible value: ${controller.isContainerVisible.value}');
+                        //                         controller.isContainerVisible.value = false;
+                        //                         print('New isContainerVisible value: ${controller.isContainerVisible.value}');
+                        //                       },
+                        //                       icon: Icon(Icons.close, color: Colors.white, size: 20),
+                        //                     ),
+                        //                   ),
+                        //                   controller.isLoading.value
+                        //                       ? Center(
+                        //                     child: Padding(
+                        //                       padding: EdgeInsets.only(top: Get.height * 0.3),
+                        //                       child: RoundedLoader(),
+                        //                     ),
+                        //                   )
+                        //                       : controller.productList.isEmpty
+                        //                       ? Center(
+                        //                     child: MAResultEmpty(
+                        //                       msg: 'Results Empty',
+                        //                     ),
+                        //                   )
+                        //                       : Expanded(
+                        //                     child: AppRefresh(
+                        //                       refreshFunction: () => controller.refresh(),
+                        //                       child: ListView.builder(
+                        //                         scrollDirection: Axis.horizontal, // Horizontal scroll direction
+                        //                         itemCount: controller.productList.length,
+                        //                         itemBuilder: (BuildContext context, int index) {
+                        //                           final product = controller.productList[index];
+                        //                           return Container(
+                        //                             margin: EdgeInsets.symmetric(horizontal: 5), // Adjust margin for horizontal scrolling
+                        //                             width: Get.width * 0.9,
+                        //                             decoration: BoxDecoration(
+                        //                               borderRadius: BorderRadius.circular(12),
+                        //                             ),
+                        //                             child: Column(
+                        //                               mainAxisAlignment: MainAxisAlignment.center,
+                        //                               children: [
+                        //                                 Padding(
+                        //                                   padding: const EdgeInsets.all(5.0),
+                        //                                   child: Container(
+                        //                                     width: Get.width * 0.75,
+                        //                                     height: Get.height * 0.10,
+                        //                                     child: product.bannerImgPath != null &&
+                        //                                         product.bannerImg != null
+                        //                                         ? Image.network(
+                        //                                       '${product.bannerImgPath}/${product.bannerImg}',
+                        //                                       fit: BoxFit.fill,
+                        //                                     )
+                        //                                         : Image.asset(
+                        //                                       'assets/png/ac.png',
+                        //                                       fit: BoxFit.fill,
+                        //                                     ),
+                        //                                   ),
+                        //                                 ),
+                        //                                 Text(
+                        //                                   "Exclusive Offer",
+                        //                                   style: MyTheme.regularTextStyle(
+                        //                                     fontWeight: FontWeight.w500,
+                        //                                     fontSize: Get.height * 0.033,
+                        //                                   ),
+                        //                                 ),
+                        //                                 Row(
+                        //                                   mainAxisAlignment: MainAxisAlignment.center,
+                        //                                   children: [
+                        //                                     Text(
+                        //                                       "Now @ ",
+                        //                                       style: MyTheme.regularTextStyle(
+                        //                                         fontWeight: FontWeight.w500,
+                        //                                         fontSize: Get.height * 0.026,
+                        //                                       ),
+                        //                                     ),
+                        //                                     SizedBox(width: Get.width * 0.01),
+                        //                                     Text(
+                        //                                       product.price ?? "",
+                        //                                       style: MyTheme.regularTextStyle(
+                        //                                         fontWeight: FontWeight.w500,
+                        //                                         fontSize: Get.height * 0.026,
+                        //                                       ),
+                        //                                     ),
+                        //                                   ],
+                        //                                 ),
+                        //                                 BuyNowButton(
+                        //                                   buttonPress: () async {
+                        //                                     Get.toNamed(Routes.productListView);
+                        //                                   },
+                        //                                   isEnabled: true,
+                        //                                   padding: const EdgeInsets.only(top: 10),
+                        //                                   height: Get.height * 0.055,
+                        //                                   width: Get.width * 0.35,
+                        //                                   clipBehavior: 0,
+                        //                                   radius: 30,
+                        //                                   fontSize: 16,
+                        //                                   text: 'Buy Now',
+                        //                                 ),
+                        //                                 SizedBox(height: Get.height * 0.01),
+                        //                                 Padding(
+                        //                                   padding: EdgeInsets.only(bottom: 10.0),
+                        //                                   child: Row(
+                        //                                     mainAxisAlignment: MainAxisAlignment.center,
+                        //                                     children: [
+                        //                                       CircleAvatar(
+                        //                                         radius: 5,
+                        //                                         backgroundColor: Colors.white,
+                        //                                       ),
+                        //                                       SizedBox(width: Get.width * 0.01),
+                        //                                       CircleAvatar(
+                        //                                         radius: 5,
+                        //                                         backgroundColor: Colors.white,
+                        //                                       ),
+                        //                                       SizedBox(width: Get.width * 0.01),
+                        //                                       CircleAvatar(
+                        //                                         radius: 5,
+                        //                                         backgroundColor: Colors.white,
+                        //                                       ),
+                        //                                     ],
+                        //                                   ),
+                        //                                 ),
+                        //                               ],
+                        //                             ),
+                        //                           );
+                        //                         },
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 ],
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   )
+                        //       : Container(); // Return an empty container when not visible
+                        // })
                       ]),
                     ),
                   ],
@@ -837,6 +884,17 @@ class AcListingView extends GetView<AcListingController> {
             ),
           ),
         ])));
+  }
+}
+
+String getStatusText(String? status) {
+  switch (status) {
+    case "3":
+      return "Completed";
+    case "4":
+      return "Expired";
+    default:
+      return "";
   }
 }
 
